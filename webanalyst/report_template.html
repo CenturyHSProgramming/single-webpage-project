@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Results</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.1/css/bulma.min.css">
+    <style>
+        th,
+        td {
+            padding: .5em 1em;
+        }
+
+        section.p-1 {
+            margin: .5em 0;
+            border-bottom: .1em solid #333;
+        }
+
+        tr.errors {
+            background-color: rgb(209, 141, 141);
+        }
+        ul {
+            list-style-position: inside;
+            margin-left: 1em;
+            list-style-type: initial;
+        }
+    </style>
+</head>
+
+<body class="container">
+    <section class="section">
+        <header class="p-1">
+            <h1 class="title">Report Results</h1>
+        </header>
+        <div class="container">
+            <section id="general" class="p-1">
+                <header class="p-1">
+                    <h2 class="subtitle">General Results</h2>
+                </header>
+                <div class="table-container">
+                    <table id="general-results-files" class="table is-striped is-hoverable">
+                        <caption class="has-text-weight-semibold">Required Number of Files</caption>
+                        <thead>
+                            <tr>
+                                <th>File Type</th>
+                                <th>Minimum # Required</th>
+                                <th>Actual # in Project</th>
+                                <th>Results</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="general-html-files-results">
+                                <td>HTML Files</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="general-css-files-results">
+                                <td>CSS Files</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table id="general-results-writing" class="table is-striped is-hoverable">
+                        <caption class="has-text-weight-semibold">General Results: Writing Goals
+                        </caption>
+                        <thead>
+                            <tr>
+                                <th>Goal Type</th>
+                                <th>Range of Values</th>
+                                <th>Actual Results</th>
+                                <th>Meets?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="general-spp-results">
+                                <td>Avg Sentences/Paragraph</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="general-wps-results">
+                                <td>Avg Words/Sentence</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section id="HTML" class="p-1">
+                <header class="p-1">
+                    <h2 class="subtitle">HTML Results</h2>
+                </header>
+                <div class="table-container">
+                    <table class="table is-striped is-hoverable">
+                        <caption class="has-text-weight-semibold">HTML Level</caption>
+                        <thead>
+                            <tr>
+                                <th>HTML Level</th>
+                                <th>Can Attain Level?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="html-overview">
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table is-striped is-hoverable">
+                        <caption class="has-text-weight-semibold">Validator Reports</caption>
+                        <thead>
+                            <tr>
+                                <th>Page name</th>
+                                <th>Number of errors</th>
+                                <th>Cumulative</th>
+                                <th>Results</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="html-validation">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table is-striped is-hoverable">
+                        <caption class="has-text-weight-semibold">Validator Errors</caption>
+                        <thead>
+                            <tr>
+                                <th>Page name</th>
+                                <th>Error Message</th>
+                                <th>Location</th>
+                                <th>Extract</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="html-validator-errors">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table is-striped is-hoverable">
+                        <caption class="has-text-weight-semibold">Required HTML Elements</caption>
+                        <thead>
+                            <tr>
+                                <th>Element</th>
+                                <th>Goal</th>
+                                <th>Actual</th>
+                                <th>Results</th>
+                            </tr>
+                        </thead>
+                        <tbody id="html-elements-results">
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section id="CSS" class="p-1">
+                <header class="p-1">
+                    <h2 class="subtitle">CSS Results</h2>
+                </header>
+                <div class="table-container">
+                    <table class="table is-striped is-hoverable">
+                        <caption class="has-text-weight-semibold">CSS Validator Reports</caption>
+                        <thead>
+                            <tr>
+                                <th>Page name</th>
+                                <th>Error Message</th>
+                                <th>Location</th>
+                                <th>Extract</th>
+                            </tr>
+                        </thead>
+                        <tbody id="css-validation-general">
+                            <tr id="css-validation">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table is-striped is-hoverable">
+                        <caption class="has-text-weight-semibold">CSS Validator Errors</caption>
+                        <thead>
+                            <tr>
+                                <th>Page name</th>
+                                <th>Error Message</th>
+                                <th>Location</th>
+                                <th>Extract</th>
+                            </tr>
+                        </thead>
+                        <tbody id="css-validation-specifics">
+                            <tr id="css-validator-errors">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table is-striped is-hoverable">
+                        <caption class="has-text-weight-semibold">CSS General Styles Report</caption>
+                        <thead id="css-general-styles">
+                            <tr>
+                                <th>Goal</th>
+                                <th>Actual</th>
+                                <th>Results</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section id="overall" class="p-1">
+                <header class="p-1">
+                    <h2 class="subtitle">Overall Results</h2>
+                </header>
+                <div class="table-container">
+                    <table class="table is-striped is-hoverable">
+                        <thead>
+                            <tr>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </section>
+</body>
+
+</html>
