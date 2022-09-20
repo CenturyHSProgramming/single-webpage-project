@@ -4,13 +4,13 @@ import re
 
 from bs4 import BeautifulSoup
 
-from . import CSSinator
-from . import HTMLinator as html
-from . import clerk
-from . import color_keywords as keywords
-from . import colortools as colors
+import webcode_tk.css as CSSinator
+import webcode_tk.html as html
+import file_clerk.clerk as clerk
+import webcode_tk.color_keywords as keywords
+import webcode_tk.colortools as colors
 from . import report as rep
-from . import validator as val
+import webcode_tk.validator as val
 
 stylesheet = CSSinator.Stylesheet
 

@@ -3,10 +3,10 @@ import re
 
 from bs4 import BeautifulSoup
 
-from . import HTMLinator as html
-from . import clerk
+import webcode_tk.html as html
+import file_clerk.clerk as clerk
 from . import report as rep
-from . import validator as val
+import webcode_tk.validator as val
 
 logging.basicConfig(
     format="%(asctime)s - %(message)s", datefmt="%d-%b-%y %H:%M:%S"

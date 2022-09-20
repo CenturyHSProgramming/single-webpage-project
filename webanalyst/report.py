@@ -3,10 +3,10 @@ import re
 
 from bs4 import BeautifulSoup
 import file_clerk.clerk as clerk
+import webcode_tk.html as html
 
-from . import CSSReport
-from . import HTMLinator as html
-from . import HTMLReport, clerk
+from . import CSSReport as CSSReport
+from . import HTMLReport as HTMLReport
 
 logging.basicConfig(
     format="%(asctime)s - %(message)s", datefmt="%d-%b-%y %H:%M:%S"
