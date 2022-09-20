@@ -2,6 +2,7 @@ import logging
 import re
 
 from bs4 import BeautifulSoup
+import file_clerk.clerk as clerk
 
 from . import CSSReport
 from . import HTMLinator as html
@@ -383,7 +384,7 @@ if __name__ == "__main__":
     single_page_path = "tests/test_files/projects/single_page/"
 
     # project path
-    responsive_nav_path = "projects/responsive-navbar/"
+    responsive_nav_path = "project/responsive-navbar/"
     project_path = "projects/single-page/"
     project_page = Report(responsive_nav_path)
     project_page.generate_report()

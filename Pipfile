@@ -44,6 +44,8 @@ flake8 = "*"
 autoflake = "*"
 autoflake8 = "*"
 anytree = "*"
+poetry = "*"
+pipenv-poetry-migrate = "*"
 
 [requires]
 python_version = "3.9"

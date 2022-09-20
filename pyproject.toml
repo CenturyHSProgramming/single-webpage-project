@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "single-page-project"
+version = "0.1.0"
+description = "An autograder for a student's single page web project (designed to be forked for each student)."
+authors = ["hundredvisionsguy <cwinikka@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "single_page_project"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+file-clerk = "^1.0.9"
+webcode-tk = "^0.3.2"
+bs4 = "^0.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
