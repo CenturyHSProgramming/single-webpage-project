@@ -1,10 +1,10 @@
 # Project Name: Single Web Page
 
 ## Project Description
-***GOAL***: Students are asked to create a single web page designed to give information about a student-selected topic using Headings (h1 & h2), paragraphs, links, and bold and italics.
+***GOAL***: Students will be able to write and organize content for a single web page that contains a variety of HTML headers, images, paragraphs, lists, and links and style the content using a variety of CSS techniques.
 
 ### HTML Level = 101
-This project does not meet the requirements for attaining the next level in HTML.
+This project does not meet the requirements for attaining the next level in HTML. For that, we need to create a multi-page website.
 
 ### CSS Level = 101
 This project does not meet the requirements for attaining the next level in CSS.
@@ -28,8 +28,9 @@ This project does not meet the requirements for attaining the next level in CSS.
         + `H2`: 2 or more per page
         + `P` : 3 or more per page
     * Other Tags:
-        + `IMG`: 2 or more
-        + `FIGURE`: 2 or more
+        + `IMG`: 3 or more
+        + `FIGURE`: 3 or more
+        + `FIGCAPTION`: 3 or more
         + `UL` or `OL`: 1 or more
         + `LI`: 3 or more
         + `A`: 3 or more
@@ -57,14 +58,4 @@ This project does not meet the requirements for attaining the next level in CSS.
         + padding
         + border
         + margin
-    * Bonus Opportunity:
-        + link colors:
-            * +1 for hyperlink colors
-        + hover effects:
-            * +1 for hover
-            * +1 for visited
-            * +1 for active (while holding it down)
-        + link color contrast:
-            +1 for link contrast of AAA
-            +1 for hover contrast of AAA
-            +1 for visited contrast of AAA
+    
