@@ -52,10 +52,15 @@ This project does not meet the requirements for attaining the next level in CSS.
             - Normal: AAA
             - Large: AA
 * Project-specific Requirements:
+    * Required Declarations:
+        + `figure` or `div`: `border`, `margin`, `padding`
     * Required Selectors:
         + type
     * Required Properties:
-        + padding
-        + border
-        + margin
-    
+        + `padding`
+        + `border`
+        + `margin`
+    * Fonts NOT allowed:
+        + `Comic Sans`
+        + `Times New Roman` (that's the default font in most browsers)
+        + `Papyrus`
