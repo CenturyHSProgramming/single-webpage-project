@@ -37,4 +37,4 @@ This project does not meet the requirements for attaining the next level in CSS.
         + `STRONG` or `B`: 2 or more
         + `EM` or `I`: 2 or more
     * Required Nested Tags:
-        + 3 `FIGURE`s that each must contain the following: `IMG` and `FIGCAPTION`
+        + 3 `FIGURE`s that each must contain the following:`IMG` and `FIGCAPTION`

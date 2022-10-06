@@ -51,16 +51,11 @@ class HTMLReport:
                 "meets_other_essential_elements": False,
             },
             "required_nested_elements": {
-                "figure": {
-                    "count": 3,
-                    "children": ("img", "figcaption"),
-                    },
             },
             "actual_nested_elements": {
                 None: None,
             },
             "meets_required_nested_elements": {
-                "figure_has_required_nested": False,
             },
             "meets_requirements": False,
         }
@@ -70,6 +65,8 @@ class HTMLReport:
         self.get_html_requirements_list()
         self.get_html_level()
         self.get_validator_goals()
+        self.set_required_nested_elements()
+        self.get_required_nested_elements()
         self.ammend_required_elements()
         self.set_linked_stylesheets()
         self.analyze_results()
@@ -562,6 +559,69 @@ class HTMLReport:
             if not element[-1]:
                 return False
         return True
+
+    def set_required_nested_elements(self):
+        html_requirements = self.html_requirements_list
+        nested_requirements = []
+        start = 0
+        stop = 0
+        for i in range(len(html_requirements)):
+            if start > 0 and "*" in html_requirements[i]:
+                stop = i
+            if "Required Nested" in html_requirements[i]:
+                start = i + 1
+        if stop == 0:
+            nested_requirements = html_requirements[start:]
+        else:
+            nested_requirements = html_requirements[start: stop]
+        for req in nested_requirements:
+            num_count = re.findall(r'\d', req)
+            num_count = int(num_count[0])
+            split_data = req.split(":")
+            container = self.get_container(split_data[0])
+            children = self.get_children(split_data[1])
+            self.report_details["required_nested_elements"] = {container: {}}
+            self.report_details["required_nested_elements"][container]["count"] = num_count
+            self.report_details["required_nested_elements"][container]["children"] = children
+
+    def get_container(self, text: str) -> str:
+        """returns the element name from the backtics
+
+        Args:
+            text: the text from the README file that contains
+                a single element in back tics
+
+        Returns:
+            element: the element inside of the back tics"""
+
+        element = text.split("`")[1]
+        return element
+
+    def get_children(self, text: str) -> list:
+        """Returns a list of all elements from the string.
+
+        We will count the number of backtics and divide by two
+        to get the official number of elements we are looking for.
+        Then we'll use the split method to split by back tic
+        and grab just the elements ignoring all other text.
+
+        Args:
+            text: this is the text from the README file that
+                indicates all child elements from the container
+
+        Returns:
+            elements: a list of all child elements that we are
+                looking for.
+        """
+        elements = []
+        num_elements = text.count("`")
+        num_elements /= 2
+        num_elements = int(num_elements)
+        split_text = text.split("`")
+        for i in range(len(split_text)):
+            if i % 2 == 1:
+                elements.append(split_text[i])
+        return elements
 
     def get_required_nested_elements(self):
         # Get a list of required containers and their required children
