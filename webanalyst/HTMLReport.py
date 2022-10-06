@@ -631,7 +631,7 @@ class HTMLReport:
             children = content.get('children')
             files = self.get_html_files_list()
             for file in files:
-                elements = html.get_elements(container, file)
+                elements = html.get_elements(container.lower(), file)
                 if elements:
                     results[container] = []
                     for child in children:
