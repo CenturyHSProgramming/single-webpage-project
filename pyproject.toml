@@ -1,11 +1,11 @@
 [tool.poetry]
-name = "single-page-project"
+name = "single-html-page-project"
 version = "0.1.0"
-description = "An autograder for a student's single page web project (designed to be forked for each student)."
+description = "An autograder for a student's single HTML page web project (designed to be forked for each student)."
 authors = ["hundredvisionsguy <cwinikka@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-packages = [{include = "single_page_project"}]
+packages = [{include = "single_html_page_project"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"

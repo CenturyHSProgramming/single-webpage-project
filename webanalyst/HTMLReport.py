@@ -50,6 +50,18 @@ class HTMLReport:
                 "meets_HTML5_essential_elements": False,
                 "meets_other_essential_elements": False,
             },
+            "required_nested_elements": {
+                "figure": {
+                    "count": 3,
+                    "children": ("img", "figcaption"),
+                    },
+            },
+            "actual_nested_elements": {
+                None: None,
+            },
+            "meets_required_nested_elements": {
+                "figure_has_required_nested": False,
+            },
             "meets_requirements": False,
         }
 
@@ -356,6 +368,7 @@ class HTMLReport:
         self.set_required_elements_found()
         self.meets_required_elements()
         self.meets_html5_essential_requirements()
+        self.get_required_nested_elements()
         self.check_for_inline_styles()
 
     def publish_results(self):
@@ -550,6 +563,28 @@ class HTMLReport:
                 return False
         return True
 
+    def get_required_nested_elements(self):
+        # Get a list of required containers and their required children
+        details = self.report_details.get("required_nested_elements")
+        results = {}
+        for container, content in details.items():
+            children = content.get('children')
+            files = self.get_html_files_list()
+            for file in files:
+                elements = html.get_elements(container, file)
+                if elements:
+                    results[container] = []
+                    for child in children:
+                        contents = html.get_element_content(elements)
+                        target = "<" + child
+                        if target in contents:
+                            results[container].append(child)
+            count = details.get(container).get('count')
+            if len(results.keys()) >= count:
+                # we have the same number of containers
+                matches = 0
+                # for items in results.
+
     def set_linked_stylesheets(self):
         """will generate a list of HTML docs and the CSS they link to"""
         linked = {}
@@ -573,3 +608,9 @@ class HTMLReport:
                 files_with_inline_styles.append(filename)
 
         self.report_details["uses_inline_styles"] = files_with_inline_styles
+
+
+if __name__ == "__main__":
+    path = "project/"
+    my_report = rep.Report(path)
+    my_report.generate_report()
