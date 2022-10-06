@@ -5,7 +5,6 @@ from bs4 import BeautifulSoup
 import file_clerk.clerk as clerk
 import webcode_tk.html as html
 
-from . import CSSReport as CSSReport
 from . import HTMLReport as HTMLReport
 
 logging.basicConfig(
@@ -22,7 +21,6 @@ class Report:
         self.__readme_list = re.split("[\n]", self.__readme_text)
         self.general_report = None
         self.html_report = None
-        self.css_report = None
         self.__dir_path = dir_path
 
     def get_readme_text(self):
@@ -66,10 +64,6 @@ class Report:
             "details": {"description": description.strip()},
         }
 
-    @staticmethod
-    def foo():
-        pass
-
     def generate_report(self):
         # pull readme text
         self.get_readme_text()
@@ -81,27 +75,11 @@ class Report:
         self.html_report = HTMLReport.HTMLReport(
             self.__readme_list, self.__dir_path
         )
-        self.css_report = CSSReport.CSSReport(
-            self.__readme_list, self.__dir_path
-        )
 
         # run each report
         self.prep_report()
         self.general_report.generate_report()
         self.html_report.generate_report()
-
-        # send linked stylesheets to css report
-        self.css_report.linked_stylesheets = (
-            self.html_report.linked_stylesheets
-        )
-
-        # Get CSS validation and send to css report
-        try:
-            css_validation_results = self.html_report.validator_errors["CSS"]
-        except KeyError:
-            css_validation_results = {}
-        self.css_report.set_css_validation(css_validation_results)
-        self.css_report.generate_report(self.html_report.html_files)
 
     def prep_report(self):
         # Create a report HTML file in the report folder
@@ -125,10 +103,10 @@ class GeneralReport:
         self.sentences_per_paragraph = 0.0
         self.report_details = {
             "min_number_files": {
-                "HTML": None, 
+                "HTML": None,
                 "CSS": None},
             "num_files_results": {
-                "Meets HTML": False, 
+                "Meets HTML": False,
                 "Meets CSS": False},
             "writing_goals": {
                 "average_SPP": [1, 5],

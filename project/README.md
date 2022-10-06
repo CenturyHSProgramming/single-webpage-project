@@ -36,31 +36,3 @@ This project does not meet the requirements for attaining the next level in CSS.
         + `A`: 3 or more
         + `STRONG` or `B`: 2 or more
         + `EM` or `I`: 2 or more
-### CSS
-* Standard Requirements:
-    * CSS Errors: no more than 2 (total)
-    * Repeat selectors: None (per page)
-    * Repeat declaration blocks: None (per page)
-* General Styles:
-    * Font Families: number of font families to be set
-        + Minimum: 1
-        + Maximum: 2
-    * Color Settings:
-        + Entire Page colors set: background and foreground
-        + Headers: background and foreground (h1 - h2 are required - all others optional - but will be checked if present)
-        + Color Contrast (readability): must pass the [color contrast analyzer tool](https://webaim.org/resources/contrastchecker/) at the following levels
-            - Normal: AAA
-            - Large: AA
-* Project-specific Requirements:
-    * Required Declarations:
-        + `figure` or `div`: `border`, `margin`, `padding`
-    * Required Selectors:
-        + type
-    * Required Properties:
-        + `padding`
-        + `border`
-        + `margin`
-    * Fonts NOT allowed:
-        + `Comic Sans`
-        + `Times New Roman` (that's the default font in most browsers)
-        + `Papyrus`
