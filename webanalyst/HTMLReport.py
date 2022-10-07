@@ -52,9 +52,7 @@ class HTMLReport:
             },
             "required_nested_elements": {
             },
-            "actual_nested_elements": {
-                None: None,
-            },
+            "actual_nested_elements": [],
             "meets_required_nested_elements": {
             },
             "meets_requirements": False,
@@ -626,8 +624,10 @@ class HTMLReport:
     def get_required_nested_elements(self):
         # Get a list of required containers and their required children
         details = self.report_details.get("required_nested_elements")
+        nested_results = self.report_details.get("actual_nested_elements")
         results = []
         for container, content in details.items():
+            single_result = self.prep_nested_results(container, content)
             children = content.get('children')
             sorted_children = children[:]
             sorted_children.sort()
@@ -655,9 +655,42 @@ class HTMLReport:
                             missing_child = True
                     if missing_child:
                         matches -= 1
+                        print("This element does not meet")
+                    else:
+                        # good news, we have a single winner
+                        single_result["number_meeting"] += 1
                 print(matches)
             else:
                 print("TODO: deal with the not enough elements")
+
+    def prep_nested_results(self, container: str, content: dict) -> dict:
+        """Prepares a dictionary for the results of a nested element goal.
+
+        The goal of this method is to prep the details for displaying the
+        details of whether a particular nested tag goal is met or not and
+        put it into plain English.
+
+        Args:
+            container: the element that should contain children.
+
+            content: how many containers there should be, and which
+                elements should be nested in that container.
+
+        Returns:
+            single_result: the dictionary that will hold the details of the
+                result of one goal.
+        """
+        count_goal = content.get("count")
+        children = content.get("children")
+        single_result = {
+            "container": container,
+            "count_goal": count_goal,
+            "expected_children": children,
+            "number_meeting": 0,
+            "meets": False,
+            "result_description": ""
+        }
+        return single_result
 
     def set_linked_stylesheets(self):
         """will generate a list of HTML docs and the CSS they link to"""
