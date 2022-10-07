@@ -626,24 +626,38 @@ class HTMLReport:
     def get_required_nested_elements(self):
         # Get a list of required containers and their required children
         details = self.report_details.get("required_nested_elements")
-        results = {}
+        results = []
         for container, content in details.items():
             children = content.get('children')
+            sorted_children = children[:]
+            sorted_children.sort()
             files = self.get_html_files_list()
             for file in files:
                 elements = html.get_elements(container.lower(), file)
                 if elements:
-                    results[container] = []
-                    for child in children:
-                        contents = html.get_element_content(elements)
-                        target = "<" + child
-                        if target in contents:
-                            results[container].append(child)
-            count = details.get(container).get('count')
-            if len(results.keys()) >= count:
-                # we have the same number of containers
-                matches = 0
-                # for items in results.
+                    for element in elements:
+                        result = {element.name:[]}
+                        for child in children:
+                            target = "<" + child.lower()
+                            contents = str(element.contents)
+                            if target in contents:
+                                result[element.name].append(child)
+                        results.append(result)
+            count_goal = details.get(container).get('count')
+            container_count = len(results)
+            if container_count >= count_goal:
+                matches = count_goal
+                for items in results:
+                    actual_children = list(items.values())
+                    missing_child = False
+                    for child in sorted_children:
+                        if child not in actual_children[0]:
+                            missing_child = True
+                    if missing_child:
+                        matches -= 1
+                print(matches)
+            else:
+                print("TODO: deal with the not enough elements")
 
     def set_linked_stylesheets(self):
         """will generate a list of HTML docs and the CSS they link to"""
