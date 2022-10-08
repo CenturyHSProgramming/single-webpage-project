@@ -50,8 +50,7 @@ class HTMLReport:
                 "meets_HTML5_essential_elements": False,
                 "meets_other_essential_elements": False,
             },
-            "required_nested_elements": {
-            },
+            "required_nested_elements": [],
             "actual_nested_elements": [],
             "meets_required_nested_elements": {
             },
@@ -564,6 +563,7 @@ class HTMLReport:
         start = 0
         stop = 0
         for i in range(len(html_requirements)):
+            stop = i + 1
             if start > 0 and "*" in html_requirements[i]:
                 stop = i
             if "Required Nested" in html_requirements[i]:
@@ -573,14 +573,17 @@ class HTMLReport:
         else:
             nested_requirements = html_requirements[start: stop]
         for req in nested_requirements:
+            datum = {}
             num_count = re.findall(r'\d', req)
             num_count = int(num_count[0])
             split_data = req.split(":")
             container = self.get_container(split_data[0])
             children = self.get_children(split_data[1])
-            self.report_details["required_nested_elements"] = {container: {}}
-            self.report_details["required_nested_elements"][container]["count"] = num_count
-            self.report_details["required_nested_elements"][container]["children"] = children
+            # report_details = self.report_details["required_nested_elements"]
+            datum = {container: {}}
+            datum[container]["count"] = num_count
+            datum[container]["children"] = children
+            self.report_details["required_nested_elements"].append(datum)
 
     def get_container(self, text: str) -> str:
         """returns the element name from the backtics
@@ -624,9 +627,11 @@ class HTMLReport:
     def get_required_nested_elements(self):
         # Get a list of required containers and their required children
         details = self.report_details.get("required_nested_elements")
-        nested_results = self.report_details.get("actual_nested_elements")
         results = []
-        for container, content in details.items():
+        for detail in details:
+            container = detail.keys()
+            container = list(container)[0]
+            content = detail.get(container)
             single_result = self.prep_nested_results(container, content)
             children = content.get('children')
             sorted_children = children[:]
@@ -636,32 +641,30 @@ class HTMLReport:
                 elements = html.get_elements(container.lower(), file)
                 if elements:
                     for element in elements:
-                        result = {element.name:[]}
+                        result = {element.name: []}
                         for child in children:
                             target = "<" + child.lower()
                             contents = str(element.contents)
                             if target in contents:
                                 result[element.name].append(child)
                         results.append(result)
-            count_goal = details.get(container).get('count')
-            container_count = len(results)
-            if container_count >= count_goal:
-                matches = count_goal
-                for items in results:
-                    actual_children = list(items.values())
-                    missing_child = False
-                    for child in sorted_children:
-                        if child not in actual_children[0]:
-                            missing_child = True
-                    if missing_child:
-                        matches -= 1
-                        print("This element does not meet")
-                    else:
-                        # good news, we have a single winner
-                        single_result["number_meeting"] += 1
-                print(matches)
-            else:
-                print("TODO: deal with the not enough elements")
+            count_goal = detail.get(container).get('count')
+            # container_count = len(results)
+
+            matches = count_goal
+            for items in results:
+                actual_children = list(items.values())
+                missing_child = False
+                for child in sorted_children:
+                    if child not in actual_children[0]:
+                        missing_child = True
+                if missing_child:
+                    matches -= 1
+                    print("This element does not meet")
+                else:
+                    # good news, we have a single winner
+                    single_result["number_meeting"] += 1
+            self.process_single_result(single_result)
 
     def prep_nested_results(self, container: str, content: dict) -> dict:
         """Prepares a dictionary for the results of a nested element goal.
@@ -691,6 +694,55 @@ class HTMLReport:
             "result_description": ""
         }
         return single_result
+
+    def process_single_result(self, result: dict):
+        """Returns a human readable description of the results of a
+        nested container goal
+
+        This processes the results of a single nested element goal to
+        determine whether it meets or not and creates a human readable
+        description of the goal and whether it meets or not for the
+        report.
+
+        Args:
+            result (dict): a dictionary of the results
+        """
+        goal = result.get("count_goal")
+        actual = result.get("number_meeting")
+        children = result["expected_children"]
+        num_children = len(children)
+        result["meets"] = actual >= goal
+        description = "There should be " + str(goal) + " <code>"
+        if goal == 1:
+            description += result["container"] + "</code> element with "
+        else:
+            description += result["container"] + "</code> elements, each with "
+        description += str(num_children) + " nested "
+        if num_children == 1:
+            description += "element inside: <code>"
+        else:
+            description += "elements inside: <code>"
+        for i in range(num_children):
+            if num_children == 1:
+                description += children[i] + "</code>. "
+            elif num_children == 2 and i == num_children - 1:
+                description += " and " + children[i] + ". "
+            elif num_children > 2 and i == num_children - 1:
+                description += ", and " + children[i] + ". "
+            else:
+                description += children[i] + "</code>"
+        if result["meets"]:
+            description += "Congratulations! Your project meets because you have "
+        else:
+            description += "Sorry, but your project does not meet because you "
+            description += "only have "
+        description += str(actual) + " <code>" + result["container"]
+        if actual > 1:
+            description += "</code> elements with the required number of children."
+        else:
+            description += "</code> element with the required number of children."
+        result["result_description"] = description
+        self.report_details["actual_nested_elements"].append(result)
 
     def set_linked_stylesheets(self):
         """will generate a list of HTML docs and the CSS they link to"""
