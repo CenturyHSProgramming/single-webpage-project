@@ -1,0 +1,221 @@
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Report Results</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.1/css/bulma.min.css" rel="stylesheet"/>
+<style>
+        th,
+        td {
+            padding: .5em 1em;
+        }
+
+        section.p-1 {
+            margin: .5em 0;
+            border-bottom: .1em solid #333;
+        }
+
+        tr.errors {
+            background-color: rgb(209, 141, 141);
+        }
+        ul {
+            list-style-position: inside;
+            margin-left: 1em;
+            list-style-type: initial;
+        }
+        section#CSS {
+            height: 0;
+            display: none;
+        }
+        .success {
+            color: rgb(4, 171, 4);
+        }
+        .warning {
+            color: rgba(255, 0, 0, 0.742);
+            font-style: italic;
+        }
+        .warning::before {
+            content: "WARNING: ";
+        }
+        .warning::after {
+            content: "!";
+        }
+    </style>
+</head>
+<body class="container">
+<section class="section">
+<header class="p-1">
+<h1 class="title">Report Results</h1>
+</header>
+<div class="container">
+<section class="p-1" id="general">
+<header class="p-1">
+<h2 class="subtitle">General Results</h2>
+</header>
+<div class="table-container">
+<table class="table is-striped is-hoverable" id="general-results-files">
+<caption class="has-text-weight-semibold">Required Number of Files</caption>
+<thead>
+<tr>
+<th>File Type</th>
+<th>Minimum # Required</th>
+<th>Actual # in Project</th>
+<th>Results</th>
+</tr>
+</thead>
+<tbody>
+<tr class="general-html-files-results"><td>HTML</td><td>1</td><td>1</td><td><strong class="success">Meets</strong></td></tr>
+<tr class="general-css-files-results"><td>CSS</td><td>0</td><td>0</td><td><strong class="success">Meets</strong></td></tr>
+</tbody>
+</table>
+<table class="table is-striped is-hoverable" id="general-results-writing">
+<caption class="has-text-weight-semibold">General Results: Writing Goals
+                        </caption>
+<thead>
+<tr>
+<th>Goal Type</th>
+<th>Range of Values</th>
+<th>Actual Results</th>
+<th>Meets?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="general-spp-results"><td>Avg. Sentences / Paragraph</td><td>[1, 5]</td><td>0</td><td><strong class="warning">Does Not Meet</strong></td></tr>
+<tr class="general-wps-results"><td>Avg. Words / Sentence</td><td>[10, 20]</td><td>0</td><td><strong class="warning">Does Not Meet</strong></td></tr>
+</tbody>
+</table>
+</div>
+</section>
+<section class="p-1" id="HTML">
+<header class="p-1">
+<h2 class="subtitle">HTML Results</h2>
+</header>
+<div class="table-container">
+<table class="table is-striped is-hoverable">
+<caption class="has-text-weight-semibold">HTML Level</caption>
+<thead>
+<tr>
+<th>HTML Level</th>
+<th>Can Attain Level?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="html-overview"><td>101</td><td>False</td></tr>
+</tbody>
+</table>
+<table class="table is-striped is-hoverable">
+<caption class="has-text-weight-semibold">Validator Reports</caption>
+<thead>
+<tr>
+<th>Page name</th>
+<th>Number of errors</th>
+<th>Cumulative</th>
+<th>Results</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>index.html</td><td>2 errors</td><td>2 total errors</td><td><strong class="warning">Does Not Meet</strong></td></tr>
+</tbody>
+</table>
+<table class="table is-striped is-hoverable">
+<caption class="has-text-weight-semibold">Validator Errors</caption>
+<thead>
+<tr>
+<th>Page name</th>
+<th>Error Message</th>
+<th>Location</th>
+<th>Extract</th>
+</tr>
+</thead>
+<tbody>
+<tr class="html-validator-errors"><td>index.html</td><td>Bad value "" for attribute "src" on element "img": Must be non-empty.</td><td>From line 11, column 9; to line 11, column 27.</td><td></td></tr><tr class="html-validator-errors"><td>index.html</td><td>Bad value "" for attribute "src" on element "img": Must be non-empty.</td><td>From line 18, column 9; to line 18, column 27.</td><td></td></tr>
+</tbody>
+</table>
+<table class="table is-striped is-hoverable">
+<caption class="has-text-weight-semibold">Required HTML Elements</caption>
+<thead>
+<tr>
+<th>Element</th>
+<th>Goal</th>
+<th>Actual</th>
+<th>Results</th>
+</tr>
+</thead>
+<tr><td>DOCTYPE</td><td>1</td><td>1</td><td><strong class="success">Meets</strong></td></tr><tr><td>HTML</td><td>1</td><td>1</td><td><strong class="success">Meets</strong></td></tr><tr><td>HEAD</td><td>1</td><td>1</td><td><strong class="success">Meets</strong></td></tr><tr><td>TITLE</td><td>1</td><td>1</td><td><strong class="success">Meets</strong></td></tr><tr><td>BODY</td><td>1</td><td>1</td><td><strong class="success">Meets</strong></td></tr><tr><td>H1</td><td>1</td><td>0</td><td><strong class="warning">Does Not Meet</strong></td></tr><tr><td>H2</td><td>2</td><td>0</td><td><strong class="warning">Does Not Meet</strong></td></tr><tr><td>P</td><td>3</td><td>0</td><td><strong class="warning">Does Not Meet</strong></td></tr><tr><td>IMG</td><td>3</td><td>2</td><td><strong class="warning">Does Not Meet</strong></td></tr><tr><td>FIGURE</td><td>3</td><td>3</td><td><strong class="success">Meets</strong></td></tr><tr><td>FIGCAPTION</td><td>3</td><td>2</td><td><strong class="warning">Does Not Meet</strong></td></tr><tr><td>UL or OL</td><td>1</td><td>0</td><td><strong class="warning">Does Not Meet</strong></td></tr><tr><td>LI</td><td>3</td><td>0</td><td><strong class="warning">Does Not Meet</strong></td></tr><tr><td>A</td><td>3</td><td>0</td><td><strong class="warning">Does Not Meet</strong></td></tr><tr><td>STRONG or B</td><td>2</td><td>0</td><td><strong class="warning">Does Not Meet</strong></td></tr><tr><td>EM or I</td><td>2</td><td>0</td><td><strong class="warning">Does Not Meet</strong></td></tr>
+</table>
+<table class="table is-striped is-hoverable">
+<caption class="has-text-weight-semibold">Required Nested Elements</caption>
+<thead>
+<tr>
+<th>Container</th>
+<th>Required Nested Children</th>
+<th>Results</th>
+<th>Meets</th>
+</tr>
+</thead>
+<tr><td>FIGURE</td><td>['IMG', 'FIGCAPTION']</td><td>There should be 3 <code>FIGURE</code> elements, each with 2 nested elements inside: <code>IMG</code> and FIGCAPTION. Sorry, but your project does not meet because you only have 1 <code>FIGURE</code> element with the required number of children.</td><td><strong class="warning">Does Not Meet</strong></td></tr><tr><td>P</td><td>['A']</td><td>There should be 2 <code>P</code> elements, each with 1 nested element inside: <code>A</code>. Sorry, but your project does not meet because you only have 0 <code>P</code> element with the required number of children.</td><td><strong class="warning">Does Not Meet</strong></td></tr><tr><td>P</td><td>['EM']</td><td>There should be 1 <code>P</code> element with 1 nested element inside: <code>EM</code>. Sorry, but your project does not meet because you only have 0 <code>P</code> element with the required number of children.</td><td><strong class="warning">Does Not Meet</strong></td></tr>
+</table>
+</div>
+</section>
+<section class="p-1" id="CSS">
+<header class="p-1">
+<h2 class="subtitle">CSS Results</h2>
+</header>
+<div class="table-container">
+<table class="table is-striped is-hoverable">
+<caption class="has-text-weight-semibold">CSS Validator Reports</caption>
+<thead>
+<tr>
+<th>Page name</th>
+<th>Error Message</th>
+<th>Location</th>
+<th>Extract</th>
+</tr>
+</thead>
+<tbody id="css-validation-general">
+
+</tbody>
+</table>
+<table class="table is-striped is-hoverable">
+<caption class="has-text-weight-semibold">CSS Validator Errors</caption>
+<thead>
+<tr>
+<th>Page name</th>
+<th>Error Message</th>
+<th>Location</th>
+<th>Extract</th>
+</tr>
+</thead>
+<tbody id="css-validation-specifics">
+
+</tbody>
+</table>
+<table class="table is-striped is-hoverable">
+<caption class="has-text-weight-semibold">CSS General Styles Report</caption>
+<thead id="css-general-styles">
+<tr>
+<th>Goal</th>
+<th>Actual</th>
+<th>Results</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section class="p-1" id="overall">
+<header class="p-1">
+<h2 class="subtitle">Overall Results</h2>
+</header>
+<p><strong class="warning">Sorry, but your project does not meet in one or more category of the HTML goals</strong></p>
+</section>
+</div>
+</section>
+</body>
+</html>
