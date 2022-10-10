@@ -3,7 +3,7 @@ Tests all general project requirements
 """
 
 import pytest
-from webanalyst import report
+import report
 
 path = "project/"
 
