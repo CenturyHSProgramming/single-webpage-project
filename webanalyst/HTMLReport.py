@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 import webcode_tk.html as html
 import file_clerk.clerk as clerk
-from . import report as rep
+import report as rep
 import webcode_tk.validator as val
 
 logging.basicConfig(
@@ -54,7 +54,7 @@ class HTMLReport:
             "actual_nested_elements": [],
             "meets_required_nested_elements": {
             },
-            "meets_requirements": False,
+            "meets_requirements": True,
         }
 
     def generate_report(self):
@@ -278,6 +278,11 @@ class HTMLReport:
             page_name = clerk.get_file_name(file_path)
             if num_errors > 0:
                 self.process_errors(page_name, errors_in_file)
+        error_goal = self.report_details.get("validator_goals")
+        if num_errors > error_goal:
+            self.report_details.get("validator_results")["HTML Meets"] = False
+        else:
+            self.report_details.get("validator_results")["HTML Meets"] = True
 
     def process_errors(self, page_name, errors):
         """receives errors and records warnings and errors"""
@@ -362,8 +367,8 @@ class HTMLReport:
         self.set_required_elements_found()
         self.meets_required_elements()
         self.meets_html5_essential_requirements()
-        self.get_required_nested_elements()
         self.check_for_inline_styles()
+        self.meets_overall()
 
     def publish_results(self):
         # Get report
@@ -447,6 +452,41 @@ class HTMLReport:
             html_elements_results_string, "html.parser"
         )
         report_content.find(id=tbody_id).replace_with(tbody_contents)
+
+        # Publish nested HTML results
+        nested_html_results = self.report_details.get("actual_nested_elements")
+        nested_html_results_str = ""
+        tbody_id = "nested-html-elements-results"
+        for result in nested_html_results:
+            container = result.get("container")
+            children = result.get("expected_children")
+            description = result.get("result_description")
+            meets = str(result.get("meets"))
+            nested_html_results_str += (
+                rep.Report.get_report_results_string("", container, children,
+                                                     description, meets)
+            )
+        # create our tbody contents
+        tbody_contents = BeautifulSoup(
+            nested_html_results_str, "html.parser"
+        )
+        report_content.find(id=tbody_id).replace_with(tbody_contents)
+
+        # Check the overall HTML goals to see if it meets or not
+        output = "<div id=\"overall-results\">"
+        if self.report_details.get("meets_requirements"):
+            output += "<p><strong class=\"success\">Congratulations! your project"
+            output += "meets all elements of the HTML goals!</strong></p></div>"
+        else:
+            output = "<p><strong class=\"warning\">Sorry, but your project does "
+            output += "not meet in one or more category of the HTML"
+            output += " goals</strong></p>"
+
+        div_contents = BeautifulSoup(
+            output, "html.parser"
+        )
+        div_id = "overall-results"
+        report_content.find(id=div_id).replace_with(div_contents)
 
         # Save new HTML as report/report.html
         with open(report_path, "w") as f:
@@ -767,6 +807,30 @@ class HTMLReport:
                 files_with_inline_styles.append(filename)
 
         self.report_details["uses_inline_styles"] = files_with_inline_styles
+
+    def meets_overall(self):
+        """does the HTML report meet (overall meets or not).
+
+        This methods checks all areas of the HTML report wherever there is
+        a meets or not (based on the report) and determines whether the HTML
+        meets all requirements.
+        """
+        meets = True
+        meets_required = self.report_details.get("meets_required_elements")
+        for result in meets_required.values():
+            if not result:
+                meets = False
+                break
+        nested_results = self.report_details.get("actual_nested_elements")
+        for result in nested_results:
+            if not result.get("meets"):
+                meets = False
+                break
+        meets_validator = self.report_details.get("validator_results").get("HTML Meets")
+        if not meets_validator:
+            meets = False
+        if not meets:
+            self.report_details["meets_requirements"] = False
 
 
 if __name__ == "__main__":

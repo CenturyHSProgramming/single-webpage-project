@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import file_clerk.clerk as clerk
 import webcode_tk.html as html
 
-from . import HTMLReport as HTMLReport
+import HTMLReport
 
 logging.basicConfig(
     format="%(asctime)s - %(message)s", datefmt="%d-%b-%y %H:%M:%S"
@@ -43,11 +43,13 @@ class Report:
             results_string += "<td>" + str(target) + "</td>"
         if results != "":
             results_string += "<td>" + str(results) + "</td>"
+        meets = ""
         if results_key == "True":
-            meets = "Meets"
-        else:
-            meets = "Does Not Meet"
-        results_string += "<td>" + meets + "</td>"
+            meets = "<strong class=\"success\">Meets</strong>"
+        if results_key == "False":
+            meets = "<strong class=\"warning\">Does Not Meet</strong>"
+        if results_key:
+            results_string += "<td>" + meets + "</td>"
         results_string += "</tr>"
         return results_string
 
@@ -354,16 +356,8 @@ if __name__ == "__main__":
     # 3. Generate a report:             project_name.generate_report()
     # 4. Go to report/report.html for results
 
-    about_me_dnn_readme_path = (
-        "tests/test_files/projects/about_me_does_not_meet/"
-    )
-
-    large_project_readme_path = "tests/test_files/projects/large_project/"
-    single_page_path = "tests/test_files/projects/single_page/"
-
     # project path
-    responsive_nav_path = "project/responsive-navbar/"
-    project_path = "projects/single-page/"
-    project_page = Report(responsive_nav_path)
+    project_path = "project/"
+    project_page = Report(project_path)
     project_page.generate_report()
     print(project_page.general_report)
