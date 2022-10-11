@@ -3,7 +3,7 @@ Tests all HTML project requirements
 """
 
 import pytest
-import report
+import webanalyst.report as report
 
 path = "project/"
 

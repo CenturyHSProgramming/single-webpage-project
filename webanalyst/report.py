@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import file_clerk.clerk as clerk
 import webcode_tk.html as html
 
-import HTMLReport
+import webanalyst.HTMLReport as HTMLReport
 
 logging.basicConfig(
     format="%(asctime)s - %(message)s", datefmt="%d-%b-%y %H:%M:%S"

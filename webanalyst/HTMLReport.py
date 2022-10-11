@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 import webcode_tk.html as html
 import file_clerk.clerk as clerk
-import report as rep
+import webanalyst.report as rep
 import webcode_tk.validator as val
 
 logging.basicConfig(
@@ -268,7 +268,7 @@ class HTMLReport:
     def validate_html(self):
         # create a dictionary with doc titles for keys
         # and num of errors for value
-
+        num_errors = 0 # initialized
         # get titles and run them through validator
         for file_path in self.html_files:
             # Get error objects
