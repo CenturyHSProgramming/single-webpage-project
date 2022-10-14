@@ -48,4 +48,7 @@ poetry = "*"
 pipenv-poetry-migrate = "*"
 
 [requires]
-python_version = "3.9"
+python_version = "^3.8"
+
+[scripts]
+test = "pytest"
