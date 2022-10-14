@@ -8,7 +8,7 @@ readme = "README.md"
 packages = [{include = "single_html_page_project"}]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.8"
 file-clerk = "^1.0.9"
 webcode-tk = "^0.3.2"
 bs4 = "^0.0.1"
