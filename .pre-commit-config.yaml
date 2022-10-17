@@ -49,3 +49,11 @@ repos:
       - id: flake8
         additional_dependencies: ["flake8-eradicate==1.2.0"]
         exclude: ^tests/codegen/snapshots/python/
+  - repo: local
+    hooks:
+      - id: create requirements
+        name: create requirements
+        entry: sh create-requirements.sh
+        language: system
+        always_run: true
+        pass_filenames: false
