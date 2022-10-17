@@ -12,24 +12,28 @@ Students are also asked to apply basic CSS styles for fonts, colors, and images.
 6. Throughout working on this project, track your changes and updates on an ongoing basis through well-written commits.
 7. Add content to fill out each section being sure to include all required elements (paragraphs, lists, images).
 8. Use the `figure` tag for each image and be sure to add appropriate credits and captions using the `figcaption` tag.
-9. Run your HTML through the ***[w3c online validator](https://validator.w3.org/#validate_by_upload)*** 
+9. Run your HTML through the ***[w3c online validator](https://validator.w3.org/#validate_by_upload)***
 10. Fix any errors
 11. Style your page by adding colors and fonts.
 12. Make sure the colors go well together and provide a high contrast between light and dark.
 13. Test your colors using the ***[WebAIM Color Contrast Checker](https://webaim.org/resources/contrastchecker/)*** and fix the colors if necessary.
 14. Run your CSS through the ***[W3C CSS Validation Service](https://jigsaw.w3.org/css-validator/#validate_by_upload)*** and fix any errors.
-15. Once you have met all requirements and are satisfied with your work, make one last commit of your project. 
+15. Once you have met all requirements and are satisfied with your work, make one last commit of your project.
 
 ## How to test your work as you go
-This project uses the Python programming language to test your project to make sure you have met all requirements (see below). 
+This project uses the Python programming language to test your project to make sure you have met all requirements (see below).
 
 ### Pre-reqs
-If you wish to test your project locally, be sure to have the following installed on your machine: 
-* [Python v3.6 or higher](https://www.python.org/downloads/) 
-* [Pipenv](https://pypi.org/project/pipenv/) - you can install pipenv using pip (once you have Python installed on your machine)
+If you wish to test your project locally, be sure to have the following installed on your machine:
+* [Python v3.6 or higher](https://www.python.org/downloads/)
+* [Poetry](https://python-poetry.org/) - you can install poetry using pip (once you have Python installed on your machine) using the following command from the [Installation Instructions](https://python-poetry.org/docs/#installation)
+    * `curl -sSL https://install.python-poetry.org | python3 -` for Linxu, macOS, and Windows (WSL)
+    * `(Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | py -` - for Windows (in Powershell)
 
 ### Testing your project
-1. Activate your Pip environment: In the terminal (or Git BASH), enter `pipenv shell`
+1. Activate your Pip environment: In the terminal (or Git BASH), enter the following commands:
+    * `poetry install`
+    * `poetry shell`
 2. If using a text editor, you might have to set the Python Interpreter
     * In VSCode:
       1. Click View > Command Palette
@@ -45,7 +49,7 @@ If you wish to test your project locally, be sure to have the following installe
 When selecting skills and practices, we will be using the [Mozilla Developer Network](https://developer.mozilla.org/) as the final arbiter of styles and best practices.
 
 ## IMPORTANT
-For this to work correctly, you must 
+For this to work correctly, you must
 * only place your web project files in the project folder.
 * leave the README.md file in the project folder alone.
 
