@@ -5,7 +5,6 @@ Checks report/test_results.txt for number of passes and failures
 import pytest
 
 
-@pytest.fixture
 def overall_results():
     """Generates a report on all relevant project files"""
     results = []
@@ -25,25 +24,54 @@ def overall_results():
             results.append(("Tests Failed: ", failed))
         if "short test summary" in line:
             break
-    yield results
+    return results
 
 
-# @pytest.fixture
-# def general_results(overall_results):
-#     data = overall_results
-#     output = []
-#     for description, number in data:
-#         for i in range(number):
-#             if "passed" in description.lower():
-#                 output.append("Pass")
-#             else:
-#                 output.append("failed")
-#     return output
+def general_results(overall_results):
+    data = overall_results[1:3]
+    output = []
+    output = get_results_list(data)
+    return output
 
 
-# @pytest.mark.parametrize("item", general_results)
-# def test_general_requirements(item):
-#     if "passed" == item:
-#         assert True
-#     else:
-#         assert False
+def html_results(overall):
+    data = overall[4:]
+    output = []
+    output = get_results_list(data)
+    return output
+
+
+def get_results_list(data):
+    results = []
+    for description, number in data:
+        for i in range(number):
+            if "passed" in description.lower():
+                results.append("Pass")
+            else:
+                results.append("failed")
+    return results
+
+
+results = overall_results()
+general = general_results(results)
+html = html_results(results)
+
+
+@pytest.mark.parametrize("item", general)
+def test_general_requirements(item):
+    if "passed" == item:
+        print("We have a passed general requirements test.")
+        assert True
+    else:
+        print("We have a failed general requirements test.")
+        assert False
+
+
+@pytest.mark.parametrize("test", html)
+def test_html_requirements(test):
+    if "passed" == test:
+        print("We have a passed HTML requirements test.")
+        assert True
+    else:
+        print("We have a failed HTML requirements test.")
+        assert False
