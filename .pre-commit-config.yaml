@@ -61,4 +61,4 @@ repos:
         entry: sh store_test_results.sh
         language: system
         always_run: true
-        pass_filenames: false
+        pass_filenames: true
