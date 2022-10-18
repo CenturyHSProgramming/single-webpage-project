@@ -6,18 +6,9 @@ import pytest
 
 
 @pytest.fixture
-def results():
+def overall_results():
     """Generates a report on all relevant project files"""
-    results = {
-        "general requirements": {
-            "passed": 0,
-            "failed": 0,
-        },
-        "HTML requirements": {
-            "passed": 0,
-            "failed": 0,
-        },
-    }
+    results = []
     with open("report/test_results.txt") as f:
         lines = f.readlines()
     for line in lines:
@@ -25,18 +16,34 @@ def results():
             test_results = line.split(".py")[1]
             passed = test_results.count(".")
             failed = test_results.count("F")
+            total_tests = passed + failed
             if "general_requirements" in line:
-                results["general requirements"]["passed"] = passed
-                results["general requirements"]["failed"] = failed
+                results.append(("General Requirements", total_tests))
             else:
-                results["HTML requirements"]["passed"] = passed
-                results["HTML requirements"]["failed"] = failed
+                results.append(("HTML requirements", total_tests))
+            results.append(("Tests Passed: ", passed))
+            results.append(("Tests Failed: ", failed))
         if "short test summary" in line:
             break
     yield results
 
 
-def test_for_number_of_passes(results):
-    # TODO: Mark parametrize the loops here
-    # Also: split test functions into each category of tests
-    assert True
+# @pytest.fixture
+# def general_results(overall_results):
+#     data = overall_results
+#     output = []
+#     for description, number in data:
+#         for i in range(number):
+#             if "passed" in description.lower():
+#                 output.append("Pass")
+#             else:
+#                 output.append("failed")
+#     return output
+
+
+# @pytest.mark.parametrize("item", general_results)
+# def test_general_requirements(item):
+#     if "passed" == item:
+#         assert True
+#     else:
+#         assert False
