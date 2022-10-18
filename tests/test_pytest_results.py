@@ -2,29 +2,16 @@
 Checks report/test_results.txt for number of passes and failures
 """
 
+import get_pytest_results as pt_results
 import pytest
 
+pt_results.get_general_test_results()
 
-def overall_results():
-    """Generates a report on all relevant project files"""
-    results = []
-    with open("report/test_results.txt") as f:
-        lines = f.readlines()
-    for line in lines:
-        if "tests\\" in line:
-            test_results = line.split(".py")[1]
-            passed = test_results.count(".")
-            failed = test_results.count("F")
-            total_tests = passed + failed
-            if "general_requirements" in line:
-                results.append(("General Requirements", total_tests))
-            else:
-                results.append(("HTML requirements", total_tests))
-            results.append(("Tests Passed: ", passed))
-            results.append(("Tests Failed: ", failed))
-        if "short test summary" in line:
-            break
-    return results
+# TODO:
+# write a script to call test_general_requirements.py and
+# test_html_requirements and store the results in variables
+# NOTE: keep this as pytest, but have the script that runs pytest
+# be its own script
 
 
 def general_results(overall_results):
@@ -52,7 +39,7 @@ def get_results_list(data):
     return results
 
 
-results = overall_results()
+results = pt_results.overall_results()
 general = general_results(results)
 html = html_results(results)
 
