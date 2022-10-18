@@ -1,20 +1,21 @@
 #!/bin/bash
+NEW_TEST_RESULTS=$(pytest --tb=no)
 
 if [ -f report/test_results.txt ]; then
     echo "report/test_results.txt exists."
-    echo "removing old results."
-
-    rm report/test_results.txt
-    echo "creating new pytest results."
-    pytest --tb=no >> report/test_results.txt
-    echo "pytest results are saved in report/test_results.txt."
-    exit 0
 else
     echo "creating new pytest results."
     pytest --tb=no >> report/test_results.txt
-    echo "pytest results are saved in report/test_results.txt."
-    exit 0
+    exit 1
 fi
 
-echo "Something went wrong!"
-exit 1
+OLD_TEST_RESULTS=$(cat report/test_results.txt)
+
+if [ "$NEW_TEST_REQUIREMENTS" = "$OLD_TEST_REQUIREMENTS" ]; then
+    echo "Test results are up to date!"
+    exit 0
+else
+    echo "FAILURE: report/test_results.txt is not up to date!"
+    pytest --tb=no >> report/test_results.txt
+    exit 1
+fi
