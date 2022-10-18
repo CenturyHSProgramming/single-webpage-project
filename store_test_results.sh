@@ -4,7 +4,8 @@ NEW_TEST_RESULTS=$(pytest --tb=no)
 if [ -f report/test_results.txt ]; then
     echo "report/test_results.txt exists."
 else
-    echo "creating new pytest results."
+    echo "FAILURE: test results do not exist."
+    echo "Creating new test results (report/test_results.txt)"
     pytest --tb=no >> report/test_results.txt
     exit 1
 fi
