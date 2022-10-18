@@ -59,7 +59,7 @@ html = html_results(results)
 
 @pytest.mark.parametrize("item", general)
 def test_general_requirements(item):
-    if "passed" == item:
+    if "Pass" == item:
         print("We have a passed general requirements test.")
         assert True
     else:
@@ -69,7 +69,7 @@ def test_general_requirements(item):
 
 @pytest.mark.parametrize("test", html)
 def test_html_requirements(test):
-    if "passed" == test:
+    if "Pass" == test:
         print("We have a passed HTML requirements test.")
         assert True
     else:
