@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 NEW_TEST_RESULTS=$(pytest --tb=no)
 
 if [ -f report/test_results.txt ]; then
@@ -7,7 +7,7 @@ else
     echo "FAILURE: test results do not exist."
     echo "Creating new test results (report/test_results.txt)"
     pytest --tb=no >> report/test_results.txt
-    exit 1
+    exit 19
 fi
 
 OLD_TEST_RESULTS=$(cat report/test_results.txt)
@@ -18,5 +18,5 @@ if [ "$NEW_TEST_REQUIREMENTS" = "$OLD_TEST_REQUIREMENTS" ]; then
 else
     echo "FAILURE: report/test_results.txt is not up to date!"
     pytest --tb=no >> report/test_results.txt
-    exit 1
+    exit 11
 fi
