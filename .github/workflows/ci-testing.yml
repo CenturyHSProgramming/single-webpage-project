@@ -15,6 +15,4 @@ jobs:
         python-version: 3.8
     - name: Test with pytest
       run: |
-        pip install poetry
-        poetry install
-        poetry run pytest >> tests/test_results.txt
+        pytest tests/test_pytest_results.py
