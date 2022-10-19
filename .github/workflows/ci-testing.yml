@@ -14,5 +14,5 @@ jobs:
       with:
         python-version: 3.8
     - name: Test with pytest
-      run: |
+      run:
         pytest tests/test_pytest_results.py
