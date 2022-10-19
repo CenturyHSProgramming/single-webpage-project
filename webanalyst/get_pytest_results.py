@@ -44,6 +44,21 @@ def get_general_test_results(all_results) -> list:
     return results
 
 
+def get_html_test_results(all_results) -> list:
+    results = []
+    prep = all_results[4:]
+    for result, num in prep:
+        if "Passed" in result:
+            for i in range(num):
+                results.append("passed")
+        else:
+            for i in range(num):
+                results.append("failed")
+    return results
+
+
 if __name__ == "__main__":
     overall = overall_results()
     general_results = get_general_test_results(overall)
+    html_results = get_html_test_results(overall)
+    print(html_results)
