@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 NEW_TEST_RESULTS=$(pytest --tb=no)
 
 if [ -f report/test_results.txt ]; then
