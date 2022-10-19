@@ -15,4 +15,6 @@ jobs:
         python-version: 3.8
     - name: Test with pytest
       run: |
-        pytest
+        pip install pipenv
+        pipenv install
+        pytest tests/test_pytest_results.py
