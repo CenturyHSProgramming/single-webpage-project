@@ -5,8 +5,7 @@ from bs4 import BeautifulSoup
 import file_clerk.clerk as clerk
 import webcode_tk.html as html
 
-from . import CSSReport as CSSReport
-from . import HTMLReport as HTMLReport
+import webanalyst.HTMLReport as HTMLReport
 
 logging.basicConfig(
     format="%(asctime)s - %(message)s", datefmt="%d-%b-%y %H:%M:%S"
@@ -22,7 +21,6 @@ class Report:
         self.__readme_list = re.split("[\n]", self.__readme_text)
         self.general_report = None
         self.html_report = None
-        self.css_report = None
         self.__dir_path = dir_path
 
     def get_readme_text(self):
@@ -45,11 +43,13 @@ class Report:
             results_string += "<td>" + str(target) + "</td>"
         if results != "":
             results_string += "<td>" + str(results) + "</td>"
+        meets = ""
         if results_key == "True":
-            meets = "Meets"
-        else:
-            meets = "Does Not Meet"
-        results_string += "<td>" + meets + "</td>"
+            meets = "<strong class=\"success\">Meets</strong>"
+        if results_key == "False":
+            meets = "<strong class=\"warning\">Does Not Meet</strong>"
+        if results_key:
+            results_string += "<td>" + meets + "</td>"
         results_string += "</tr>"
         return results_string
 
@@ -66,10 +66,6 @@ class Report:
             "details": {"description": description.strip()},
         }
 
-    @staticmethod
-    def foo():
-        pass
-
     def generate_report(self):
         # pull readme text
         self.get_readme_text()
@@ -81,27 +77,11 @@ class Report:
         self.html_report = HTMLReport.HTMLReport(
             self.__readme_list, self.__dir_path
         )
-        self.css_report = CSSReport.CSSReport(
-            self.__readme_list, self.__dir_path
-        )
 
         # run each report
         self.prep_report()
         self.general_report.generate_report()
         self.html_report.generate_report()
-
-        # send linked stylesheets to css report
-        self.css_report.linked_stylesheets = (
-            self.html_report.linked_stylesheets
-        )
-
-        # Get CSS validation and send to css report
-        try:
-            css_validation_results = self.html_report.validator_errors["CSS"]
-        except KeyError:
-            css_validation_results = {}
-        self.css_report.set_css_validation(css_validation_results)
-        self.css_report.generate_report(self.html_report.html_files)
 
     def prep_report(self):
         # Create a report HTML file in the report folder
@@ -125,10 +105,10 @@ class GeneralReport:
         self.sentences_per_paragraph = 0.0
         self.report_details = {
             "min_number_files": {
-                "HTML": None, 
+                "HTML": None,
                 "CSS": None},
             "num_files_results": {
-                "Meets HTML": False, 
+                "Meets HTML": False,
                 "Meets CSS": False},
             "writing_goals": {
                 "average_SPP": [1, 5],
@@ -376,16 +356,8 @@ if __name__ == "__main__":
     # 3. Generate a report:             project_name.generate_report()
     # 4. Go to report/report.html for results
 
-    about_me_dnn_readme_path = (
-        "tests/test_files/projects/about_me_does_not_meet/"
-    )
-
-    large_project_readme_path = "tests/test_files/projects/large_project/"
-    single_page_path = "tests/test_files/projects/single_page/"
-
     # project path
-    responsive_nav_path = "project/responsive-navbar/"
-    project_path = "projects/single-page/"
-    project_page = Report(responsive_nav_path)
+    project_path = "project/"
+    project_page = Report(project_path)
     project_page.generate_report()
     print(project_page.general_report)

@@ -33,7 +33,6 @@ repos:
     hooks:
       - id: trailing-whitespace
       - id: check-merge-conflict
-      - id: end-of-file-fixer
       - id: check-toml
 
   - repo: https://github.com/psf/black
@@ -49,3 +48,17 @@ repos:
       - id: flake8
         additional_dependencies: ["flake8-eradicate==1.2.0"]
         exclude: ^tests/codegen/snapshots/python/
+  - repo: local
+    hooks:
+      - id: create requirements
+        name: create requirements
+        entry: sh create_requirements.sh
+        language: system
+        always_run: true
+        pass_filenames: true
+      - id: store test results
+        name: store test results
+        entry: sh store_test_results.sh
+        language: system
+        always_run: true
+        pass_filenames: true

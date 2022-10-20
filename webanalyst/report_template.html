@@ -25,6 +25,23 @@
             margin-left: 1em;
             list-style-type: initial;
         }
+        section#CSS {
+            height: 0;
+            display: none;
+        }
+        .success {
+            color: rgb(4, 171, 4);
+        }
+        .warning {
+            color: rgba(255, 0, 0, 0.742);
+            font-style: italic;
+        }
+        .warning::before {
+            content: "WARNING: ";
+        }
+        .warning::after {
+            content: "!";
+        }
     </style>
 </head>
 
@@ -169,6 +186,25 @@
                             </tr>
                         </tbody>
                     </table>
+                    <table class="table is-striped is-hoverable">
+                        <caption class="has-text-weight-semibold">Required Nested Elements</caption>
+                        <thead>
+                            <tr>
+                                <th>Container</th>
+                                <th>Required Nested Children</th>
+                                <th>Results</th>
+                                <th>Meets</th>
+                            </tr>
+                        </thead>
+                        <tbody id="nested-html-elements-results">
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </section>
             <section id="CSS" class="p-1">
@@ -237,19 +273,7 @@
                 <header class="p-1">
                     <h2 class="subtitle">Overall Results</h2>
                 </header>
-                <div class="table-container">
-                    <table class="table is-striped is-hoverable">
-                        <thead>
-                            <tr>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div id="overall-results">
                 </div>
             </section>
         </div>
