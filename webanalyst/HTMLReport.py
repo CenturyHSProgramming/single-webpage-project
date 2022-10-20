@@ -1,12 +1,12 @@
 import logging
 import re
 
+import file_clerk.clerk as clerk
+import webcode_tk.html as html
+import webcode_tk.validator as val
 from bs4 import BeautifulSoup
 
-import webcode_tk.html as html
-import file_clerk.clerk as clerk
 import webanalyst.report as rep
-import webcode_tk.validator as val
 
 logging.basicConfig(
     format="%(asctime)s - %(message)s", datefmt="%d-%b-%y %H:%M:%S"
@@ -52,8 +52,7 @@ class HTMLReport:
             },
             "required_nested_elements": [],
             "actual_nested_elements": [],
-            "meets_required_nested_elements": {
-            },
+            "meets_required_nested_elements": {},
             "meets_requirements": True,
         }
 
@@ -170,7 +169,9 @@ class HTMLReport:
             ][element.upper()]
             # there must be 1 for each page
             number_required = len(self.html_files)
-            element_meets = number_found == number_required
+            element_meets = (
+                number_found == number_required and number_required > 0
+            )
 
             self.report_details["required_elements_found"][
                 "HTML5_essential_elements_found"
@@ -268,7 +269,7 @@ class HTMLReport:
     def validate_html(self):
         # create a dictionary with doc titles for keys
         # and num of errors for value
-        num_errors = 0 # initialized
+        num_errors = 0  # initialized
         # get titles and run them through validator
         for file_path in self.html_files:
             # Get error objects
@@ -462,29 +463,28 @@ class HTMLReport:
             children = result.get("expected_children")
             description = result.get("result_description")
             meets = str(result.get("meets"))
-            nested_html_results_str += (
-                rep.Report.get_report_results_string("", container, children,
-                                                     description, meets)
+            nested_html_results_str += rep.Report.get_report_results_string(
+                "", container, children, description, meets
             )
         # create our tbody contents
-        tbody_contents = BeautifulSoup(
-            nested_html_results_str, "html.parser"
-        )
+        tbody_contents = BeautifulSoup(nested_html_results_str, "html.parser")
         report_content.find(id=tbody_id).replace_with(tbody_contents)
 
         # Check the overall HTML goals to see if it meets or not
-        output = "<div id=\"overall-results\">"
+        output = '<div id="overall-results">'
         if self.report_details.get("meets_requirements"):
-            output += "<p><strong class=\"success\">Congratulations! your project"
-            output += "meets all elements of the HTML goals!</strong></p></div>"
+            output += (
+                '<p><strong class="success">Congratulations! your project'
+            )
+            output += (
+                "meets all elements of the HTML goals!</strong></p></div>"
+            )
         else:
-            output = "<p><strong class=\"warning\">Sorry, but your project does "
+            output = '<p><strong class="warning">Sorry, but your project does '
             output += "not meet in one or more category of the HTML"
             output += " goals</strong></p>"
 
-        div_contents = BeautifulSoup(
-            output, "html.parser"
-        )
+        div_contents = BeautifulSoup(output, "html.parser")
         div_id = "overall-results"
         report_content.find(id=div_id).replace_with(div_contents)
 
@@ -611,15 +611,14 @@ class HTMLReport:
         if stop == 0:
             nested_requirements = html_requirements[start:]
         else:
-            nested_requirements = html_requirements[start: stop]
+            nested_requirements = html_requirements[start:stop]
         for req in nested_requirements:
             datum = {}
-            num_count = re.findall(r'\d', req)
+            num_count = re.findall(r"\d", req)
             num_count = int(num_count[0])
             split_data = req.split(":")
             container = self.get_container(split_data[0])
             children = self.get_children(split_data[1])
-            # report_details = self.report_details["required_nested_elements"]
             datum = {container: {}}
             datum[container]["count"] = num_count
             datum[container]["children"] = children
@@ -673,7 +672,7 @@ class HTMLReport:
             container = list(container)[0]
             content = detail.get(container)
             single_result = self.prep_nested_results(container, content)
-            children = content.get('children')
+            children = content.get("children")
             sorted_children = children[:]
             sorted_children.sort()
             files = self.get_html_files_list()
@@ -688,8 +687,7 @@ class HTMLReport:
                             if target in contents:
                                 result[element.name].append(child)
                         results.append(result)
-            count_goal = detail.get(container).get('count')
-            # container_count = len(results)
+            count_goal = detail.get(container).get("count")
 
             matches = count_goal
             for items in results:
@@ -731,7 +729,7 @@ class HTMLReport:
             "expected_children": children,
             "number_meeting": 0,
             "meets": False,
-            "result_description": ""
+            "result_description": "",
         }
         return single_result
 
@@ -772,15 +770,21 @@ class HTMLReport:
             else:
                 description += children[i] + "</code>"
         if result["meets"]:
-            description += "Congratulations! Your project meets because you have "
+            description += (
+                "Congratulations! Your project meets because you have "
+            )
         else:
             description += "Sorry, but your project does not meet because you "
             description += "only have "
         description += str(actual) + " <code>" + result["container"]
         if actual > 1:
-            description += "</code> elements with the required number of children."
+            description += (
+                "</code> elements with the required number of children."
+            )
         else:
-            description += "</code> element with the required number of children."
+            description += (
+                "</code> element with the required number of children."
+            )
         result["result_description"] = description
         self.report_details["actual_nested_elements"].append(result)
 
@@ -826,7 +830,9 @@ class HTMLReport:
             if not result.get("meets"):
                 meets = False
                 break
-        meets_validator = self.report_details.get("validator_results").get("HTML Meets")
+        meets_validator = self.report_details.get("validator_results").get(
+            "HTML Meets"
+        )
         if not meets_validator:
             meets = False
         if not meets:
