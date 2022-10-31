@@ -1,9 +1,9 @@
 import logging
 import re
 
-from bs4 import BeautifulSoup
 import file_clerk.clerk as clerk
 import webcode_tk.html as html
+from bs4 import BeautifulSoup
 
 import webanalyst.HTMLReport as HTMLReport
 
@@ -16,7 +16,7 @@ report_path = "report/report.html"
 
 class Report:
     def __init__(self, dir_path):
-        self.__readme_path = dir_path + "README.md"
+        self.__readme_path = dir_path + "project-requirements.md"
         self.__readme_text = clerk.file_to_string(self.__readme_path)
         self.__readme_list = re.split("[\n]", self.__readme_text)
         self.general_report = None
@@ -45,9 +45,9 @@ class Report:
             results_string += "<td>" + str(results) + "</td>"
         meets = ""
         if results_key == "True":
-            meets = "<strong class=\"success\">Meets</strong>"
+            meets = '<strong class="success">Meets</strong>'
         if results_key == "False":
-            meets = "<strong class=\"warning\">Does Not Meet</strong>"
+            meets = '<strong class="warning">Does Not Meet</strong>'
         if results_key:
             results_string += "<td>" + meets + "</td>"
         results_string += "</tr>"
@@ -104,12 +104,8 @@ class GeneralReport:
         self.words_per_sentence = 0.0
         self.sentences_per_paragraph = 0.0
         self.report_details = {
-            "min_number_files": {
-                "HTML": None,
-                "CSS": None},
-            "num_files_results": {
-                "Meets HTML": False,
-                "Meets CSS": False},
+            "min_number_files": {"HTML": None, "CSS": None},
+            "num_files_results": {"Meets HTML": False, "Meets CSS": False},
             "writing_goals": {
                 "average_SPP": [1, 5],
                 "average_WPS": [10, 20],
@@ -357,7 +353,7 @@ if __name__ == "__main__":
     # 4. Go to report/report.html for results
 
     # project path
-    project_path = "project/"
+    project_path = "webanalyst/"
     project_page = Report(project_path)
     project_page.generate_report()
     print(project_page.general_report)
