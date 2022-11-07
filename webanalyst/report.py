@@ -16,7 +16,7 @@ report_path = "report/report.html"
 
 class Report:
     def __init__(self, dir_path):
-        self.__readme_path = dir_path + "project-requirements.md"
+        self.__readme_path = "webanalyst/project-requirements.md"
         self.__readme_text = clerk.file_to_string(self.__readme_path)
         self.__readme_list = re.split("[\n]", self.__readme_text)
         self.general_report = None
@@ -353,7 +353,7 @@ if __name__ == "__main__":
     # 4. Go to report/report.html for results
 
     # project path
-    project_path = "webanalyst/"
+    project_path = "project/"
     project_page = Report(project_path)
     project_page.generate_report()
     print(project_page.general_report)
