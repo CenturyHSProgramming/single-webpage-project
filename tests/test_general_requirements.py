@@ -6,7 +6,7 @@ import pytest
 
 import webanalyst.report as report
 
-path = "webanalyst/"
+path = "project/"
 
 
 @pytest.fixture
