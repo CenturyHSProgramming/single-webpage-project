@@ -1,1 +1,31 @@
-blah
+============================= test session starts =============================
+platform win32 -- Python 3.9.5, pytest-7.1.3, pluggy-1.0.0
+rootdir: C:\Users\UserNameShouldBeYours\Documents\Coding Projects\Hundred Visions GitHub Repos\single-html-page-project
+plugins: html-3.1.1, metadata-2.0.2
+collected 21 items
+
+tests\test_general_requirements.py FFF                                   [ 14%]
+tests\test_html_requirements.py FFFFFFFFFFFFFFFF                         [ 90%]
+tests\test_pytest_results.py ss                                          [100%]
+
+=========================== short test summary info ===========================
+FAILED tests/test_general_requirements.py::test_for_required_html_files - ass...
+FAILED tests/test_general_requirements.py::test_for_average_words_per_sentence
+FAILED tests/test_general_requirements.py::test_for_average_sentences_per_paragraph
+FAILED tests/test_html_requirements.py::test_for_essential_html5_elements[required_html5_elements0]
+FAILED tests/test_html_requirements.py::test_for_essential_html5_elements[required_html5_elements1]
+FAILED tests/test_html_requirements.py::test_for_essential_html5_elements[required_html5_elements2]
+FAILED tests/test_html_requirements.py::test_for_essential_html5_elements[required_html5_elements3]
+FAILED tests/test_html_requirements.py::test_for_essential_html5_elements[required_html5_elements4]
+FAILED tests/test_html_requirements.py::test_for_assigned_tag_requirements[Expecting 1 <H1> tags. Found 0 <H1> tags.-False]
+FAILED tests/test_html_requirements.py::test_for_assigned_tag_requirements[Expecting 2 <H2> tags. Found 0 <H2> tags.-False]
+FAILED tests/test_html_requirements.py::test_for_assigned_tag_requirements[Expecting 3 <P> tags. Found 0 <P> tags.-False]
+FAILED tests/test_html_requirements.py::test_for_assigned_tag_requirements[Expecting 3 <IMG> tags. Found 0 <IMG> tags.-False]
+FAILED tests/test_html_requirements.py::test_for_assigned_tag_requirements[Expecting 3 <FIGURE> tags. Found 0 <FIGURE> tags.-False]
+FAILED tests/test_html_requirements.py::test_for_assigned_tag_requirements[Expecting 3 <FIGCAPTION> tags. Found 0 <FIGCAPTION> tags.-False]
+FAILED tests/test_html_requirements.py::test_for_assigned_tag_requirements[Expecting 1 <UL or OL> tags. Found 0 <UL or OL> tags.-False]
+FAILED tests/test_html_requirements.py::test_for_assigned_tag_requirements[Expecting 3 <LI> tags. Found 0 <LI> tags.-False]
+FAILED tests/test_html_requirements.py::test_for_assigned_tag_requirements[Expecting 3 <A> tags. Found 0 <A> tags.-False]
+FAILED tests/test_html_requirements.py::test_for_assigned_tag_requirements[Expecting 2 <STRONG or B> tags. Found 0 <STRONG or B> tags.-False]
+FAILED tests/test_html_requirements.py::test_for_assigned_tag_requirements[Expecting 2 <EM or I> tags. Found 0 <EM or I> tags.-False]
+======================== 19 failed, 2 skipped in 1.14s ========================
