@@ -1,8 +1,5 @@
 # Project Name: Single Web Page
 
-## WARNING:
-***Do not change this file***. It lists your requirements for this assignment.
-
 ## Project Description
 ***GOAL***: Students will be able to write and organize content for a single web page that contains a variety of HTML headers, images, paragraphs, lists, and links and style the content using a variety of CSS techniques.
 

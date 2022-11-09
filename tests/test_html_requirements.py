@@ -3,6 +3,7 @@ Tests all HTML project requirements
 """
 
 import pytest
+
 import webanalyst.report as report
 
 path = "project/"
@@ -24,8 +25,10 @@ def get_assigned_tags_results(data):
 my_report = report.Report(path)
 my_report.generate_report()
 report_details = my_report.html_report.report_details
-required_elements_found = report_details['required_elements_found']
-html5_essential_elements = required_elements_found['HTML5_essential_elements_found']
+required_elements_found = report_details["required_elements_found"]
+html5_essential_elements = required_elements_found[
+    "HTML5_essential_elements_found"
+]
 
 html5_essential_results = list(html5_essential_elements.items())
 assigned_tags_results = get_assigned_tags_results(required_elements_found)
