@@ -1,1 +1,7 @@
-platform win32 -- Python 3.9.5, pytest-7.1.3, pluggy-1.0.0 rootdir: C:\Users\winikkc\Documents\Coding Projects\Hundred Visions GitHub Repos\single-html-page-project plugins: html-3.1.1, metadata-2.0.2 collected 38 items  tests\test_general_requirements.py FFF [ 7%] tests\test_html_requirements.py FFFFFFFFFFFFFFFF [ 50%]
+platform win32 -- Python 3.9.5, pytest-7.1.3, pluggy-1.0.0
+ rootdir: C:\Users\winikkc\Documents\Coding Projects\Hundred Visions GitHub Repos\single-html-page-project
+ plugins: html-3.1.1, metadata-2.0.2
+ collected 38 items
+ 
+ tests\test_general_requirements.py FFF [ 7%]
+ tests\test_html_requirements.py FFFFFFFFFFFFFFFF [ 50%]
