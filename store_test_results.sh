@@ -1,9 +1,13 @@
 #!/bin/bash
-NEW_TEST_RESULTS=$(pytest --tb=no | grep -v '====')
+NEW_TEST_RESULTS=$(pytest --tb=no | grep -v '====\|FAILED')
 
 
-if [ -f report/test_results.txt ]; then
-    echo "\nreport/test_results.txt exists."
+if [[ -f report/test_results.txt && -f report/old_test_results.txt ]]; then
+    echo "both tests exist."
+elif [ -f report/test_results.txt ]; then
+    echo "Copying new test as old test results (first time)"
+    echo $NEW_TEST_RESULTS > report/old_test_results.txt
+    exit 0
 else
     echo "FAILURE: test results do not exist."
     echo "Creating new test results (report/test_results.txt)"
@@ -12,16 +16,16 @@ else
 fi
 
 
-old_test_results=$(report/test_results.txt)
-echo "Old test results are as follows..."
-echo $old_test_results
+OLD_TEST=$(cat report/test_results.txt)
+# echo "Old test is as follows..."
+# echo $OLD_TEST
 
-if [ "$new_results_top" = "$old_test_results" ]; then
+if [ "$NEW_TEST_RESULTS" = "$OLD_TEST" ]; then
     echo "Test results are up to date!"
     exit 0
 else
-    #echo "FAILURE: report/test_results.txt is not up to date!"
-    #> report/test_results.txt
-    #pytest --tb=no >> report/test_results.txt
+    echo "FAILURE: report/test_results.txt is not up to date!"
+    echo $OLD_TEST > report/old_test_results.txt
+    echo $NEW_TEST_RESULTS > report/test_results.txt
     exit 11
 fi
