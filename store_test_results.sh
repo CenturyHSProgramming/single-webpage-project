@@ -1,5 +1,6 @@
 #!/bin/bash
 NEW_TEST_RESULTS=$(pytest --tb=no)
+echo NEW_TEST_RESULTS
 
 if [ -f report/test_results.txt ]; then
     echo "report/test_results.txt exists."
