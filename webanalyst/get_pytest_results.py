@@ -57,6 +57,12 @@ def get_html_test_results(all_results) -> list:
     return results
 
 
+def get_css_test_results(all_results) -> list:
+    """ extracts all test data from test_css_requirements """
+    results = []
+    return results
+
+
 if __name__ == "__main__":
     overall = overall_results()
     general_results = get_general_test_results(overall)

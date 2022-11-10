@@ -6,6 +6,7 @@ import webcode_tk.html as html
 from bs4 import BeautifulSoup
 
 import webanalyst.HTMLReport as HTMLReport
+import webanalyst.CSSReport as CSSReport
 
 logging.basicConfig(
     format="%(asctime)s - %(message)s", datefmt="%d-%b-%y %H:%M:%S"
@@ -77,11 +78,27 @@ class Report:
         self.html_report = HTMLReport.HTMLReport(
             self.__readme_list, self.__dir_path
         )
+        self.css_report = CSSReport.CSSReport(
+            self.__readme_list, self.__dir_path
+        )
 
         # run each report
         self.prep_report()
         self.general_report.generate_report()
         self.html_report.generate_report()
+
+        # send linked stylesheets to css report
+        self.css_report.linked_stylesheets = (
+            self.html_report.linked_stylesheets
+        )
+
+        # Get CSS validation and send to css report
+        try:
+            css_validation_results = self.html_report.validator_errors["CSS"]
+        except KeyError:
+            css_validation_results = {}
+        self.css_report.set_css_validation(css_validation_results)
+        self.css_report.generate_report(self.html_report.html_files)
 
     def prep_report(self):
         # Create a report HTML file in the report folder
