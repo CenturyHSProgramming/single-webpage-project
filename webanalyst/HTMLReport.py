@@ -613,9 +613,14 @@ class HTMLReport:
         else:
             nested_requirements = html_requirements[start:stop]
         for req in nested_requirements:
+            if not req:
+                continue
             datum = {}
             num_count = re.findall(r"\d", req)
-            num_count = int(num_count[0])
+            if num_count:
+                num_count = int(num_count[0])
+            else:
+                num_count = 0
             split_data = req.split(":")
             container = self.get_container(split_data[0])
             children = self.get_children(split_data[1])
@@ -634,8 +639,11 @@ class HTMLReport:
         Returns:
             element: the element inside of the back tics"""
 
-        element = text.split("`")[1]
-        return element
+        if text:
+            element = text.split("`")[1]
+            return element
+        else:
+            return None
 
     def get_children(self, text: str) -> list:
         """Returns a list of all elements from the string.

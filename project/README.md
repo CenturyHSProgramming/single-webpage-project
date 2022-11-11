@@ -1,8 +1,5 @@
 # Project Name: Single Web Page
 
-## WARNING:
-***Do not change this file***. It lists your requirements for this assignment.
-
 ## Project Description
 ***GOAL***: Students will be able to write and organize content for a single web page that contains a variety of HTML headers, images, paragraphs, lists, and links and style the content using a variety of CSS techniques.
 
@@ -43,3 +40,41 @@ This project does not meet the requirements for attaining the next level in CSS.
         + 3 `FIGURE`s that each must contain the following:`IMG` and `FIGCAPTION`
         + 2 `P`s that each contain the following: `A`
         + 1 `P` that conains the following: `EM`
+
+### CSS
+* Standard Requirements:
+    * Styles Applied: at least 1 stylesheet or style tag
+    * CSS Errors: no more than 2 (total)
+    * Repeat selectors: None (per page)
+    * Repeat declaration blocks: None (per page)
+* General Styles:
+    * Font Families: number of font families to be set
+        + Minimum: 1
+        + Maximum: 2
+    * Color Settings:
+        + Entire Page colors set: background and foreground
+        + Color Contrast (readability): must pass the [color contrast analyzer tool](https://webaim.org/resources/contrastchecker/) at the following levels
+            - Normal: AAA
+            - Large: AA
+* Project-specific Requirements:
+    * Required Selectors:
+        + type
+        + class
+        + nav
+        + ul
+        + a
+    * Required Properties:
+        + padding
+        + border
+        + flex
+    * Bonus Opportunity:
+        + link colors:
+            * +1 for hyperlink colors
+        + hover effects:
+            * +1 for hover
+            * +1 for visited
+            * +1 for active (while holding it down)
+        + link color contrast:
+            +1 for link contrast of AAA
+            +1 for hover contrast of AAA
+            +1 for visited contrast of AAA

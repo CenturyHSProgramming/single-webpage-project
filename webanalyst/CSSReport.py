@@ -2,15 +2,15 @@ import logging
 import os
 import re
 
-from bs4 import BeautifulSoup
-
-import webcode_tk.css as CSSinator
-import webcode_tk.html as html
 import file_clerk.clerk as clerk
 import webcode_tk.color_keywords as keywords
 import webcode_tk.colortools as colors
-import webanalyst.report as rep
+import webcode_tk.css as CSSinator
+import webcode_tk.html as html
 import webcode_tk.validator as val
+from bs4 import BeautifulSoup
+
+import webanalyst.report as rep
 
 stylesheet = CSSinator.Stylesheet
 
@@ -91,7 +91,7 @@ class CSSReport:
             # There's no general styles goals
             warning = "There's no General Styles Goals in README."
             warning += "Look into it."
-            logging.warn(warning)
+            logging.warning(warning)
             return
         if "* Project-specific Requirements:" in self.readme_list:
             stop = self.readme_list.index("* Project-specific Requirements:")
@@ -1439,7 +1439,10 @@ class CSSReport:
         if not has_errors:
             # first of all check to make sure ANY CSS has been applied
             num_css_files = self.report_details.get("num_css_files")
-            num_style_tags = self.report_details.get("style_tags")[0][1]
+            try:
+                num_style_tags = self.report_details.get("style_tags")[0][1]
+            except IndexError:
+                num_style_tags = 0
             if num_css_files + num_style_tags == 0:
                 fail = (
                     "<b>Fail</b>: No CSS styles were applied in the project."
@@ -1615,5 +1618,5 @@ class CSSReport:
             return results
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pass
