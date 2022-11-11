@@ -5,6 +5,8 @@ NEW_TEST_RESULTS=$(pytest --tb=no | grep -v '====\|FAILED\|test_pytest_results.p
 echo $NEW_TEST_RESULTS > report/test_results.txt
 if [[ -f report/test_results.txt ]]; then
     echo "Test results successfully saved."
+    # TODO: Need to test for errors during test collection
+    # 1 error during collection
     git add report/test_results.txt
     exit 0
 else
