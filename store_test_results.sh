@@ -4,8 +4,17 @@ NEW_TEST_RESULTS=$(pytest --tb=no | grep -v '====\|FAILED\|test_pytest_results.p
 # store test results in report folder
 echo $NEW_TEST_RESULTS > report/test_results.txt
 
-ERRORS_COLLECTING=$(cat report/test_results.txt | grep '!!!')
-echo $ERRORS_COLLECTING
+ERRORS_COLLECTING=$(cat report/test_results.txt)
+ERROR_MSG="!!! Interrupted"
+
+if [[ $ERRORS_COLLECTING == *"$ERROR_MSG"* ]];
+then
+    echo "Pytest was interrupted."
+    echo "Most likely due to first time creation of test_results.txt file."
+    exit 11
+else
+    echo "Pytest results successfully captured."
+fi
 
 if [[ -f report/test_results.txt ]]; then
     echo "Test results successfully saved."
