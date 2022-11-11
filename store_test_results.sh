@@ -9,8 +9,10 @@ ERROR_MSG="!!! Interrupted"
 
 if [[ $ERRORS_COLLECTING == *"$ERROR_MSG"* ]];
 then
-    echo "Pytest was interrupted."
-    echo "Most likely due to first time creation of test_results.txt file."
+    echo $'\e[1;31m'!!! NOTICE: Pytest was interrupted. !!!$'\e[0m'
+    echo -e "\nYour commit was interrupted as well."
+    echo -e "This is most likely due to first time creation of test_results.txt file.\n"
+    echo $'\e[1;33m'Please re-stage and re-run your last commit.$'\e[0m'
     exit 11
 else
     echo "Pytest results successfully captured."
