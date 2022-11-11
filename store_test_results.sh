@@ -3,6 +3,10 @@ NEW_TEST_RESULTS=$(pytest --tb=no | grep -v '====\|FAILED\|test_pytest_results.p
 
 # store test results in report folder
 echo $NEW_TEST_RESULTS > report/test_results.txt
+
+ERRORS_COLLECTING=$(cat report/test_results.txt | grep '!!!')
+echo $ERRORS_COLLECTING
+
 if [[ -f report/test_results.txt ]]; then
     echo "Test results successfully saved."
     # TODO: Need to test for errors during test collection
