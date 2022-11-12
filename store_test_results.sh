@@ -13,7 +13,7 @@ then
     echo -e "\nYour commit was interrupted as well."
     echo -e "This is most likely due to first time creation of test_results.txt file.\n"
     echo $'\e[1;33m'Please re-stage and re-run your last commit.$'\e[0m'
-
+    exit 42
 else
     echo "Pytest results successfully captured."
     git add *
