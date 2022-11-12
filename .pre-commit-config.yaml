@@ -50,12 +50,6 @@ repos:
         exclude: ^tests/codegen/snapshots/python/
   - repo: local
     hooks:
-      - id: create requirements
-        name: create requirements
-        entry: sh create_requirements.sh
-        language: system
-        always_run: true
-        pass_filenames: true
       - id: store test results
         name: store test results
         entry: sh store_test_results.sh

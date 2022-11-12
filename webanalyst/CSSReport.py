@@ -452,8 +452,8 @@ class CSSReport:
                 results += "<li>Fail: in " + setting.get("html_file")
                 results += " the background-color property was not set.</li>\n"
 
-        # If no results, there were no problems
-        if not results:
+        # If no results and global colors set, there were no problems
+        if not results and num_global_set:
             results = "<b>Global Colors Set</b>: "
             results += "<b>Success</b>! All files had global colors set.\n"
             return results
@@ -975,6 +975,13 @@ class CSSReport:
         return families
 
     def get_standard_requirements(self):
+        """gets all standard css requirements from readme file and stores them in
+        report details
+
+        The language in the requirements is important. If at least or minimum is
+        included, then we need a minimum. If max or 'no more than' is included, then
+        we need a max. If None is listed, the the min and max is 0."""
+
         # get index position of Standard Req and General Styles headers
         try:
             start = self.readme_list.index("* Standard Requirements:") + 1
@@ -1000,11 +1007,40 @@ class CSSReport:
             description = split_req[0][2:]
             goal_raw = split_req[1]
             min = 0
-            if "0" in goal_raw or "None" in goal_raw:
+            max = "NA"
+
+            # language to determine min & max
+            if "None" in goal_raw:
+                min = 0
                 max = 0
             else:
-                max = re.findall(r"\d+", split_req[1])
-                max = int(max[0])
+                # get minimum
+                if "at least" in goal_raw:
+                    min = goal_raw.split("at least")[1]
+                    min = re.findall(r"\d+", min)
+                    min = int(min[0])
+                elif "min" in goal_raw:
+                    min = goal_raw.split("min")[1]
+                    min = re.findall(r"\d+", min)
+                    min = int(min[0])
+                else:
+                    min = 0
+
+                # get maximum
+                if "max" in goal_raw:
+                    # split using the word 'max'
+                    max_goal = goal_raw.split("max")[1]
+                    max = re.findall(r"\d+", max_goal)
+                    max = int(max[0])
+                elif "no more than" in goal_raw:
+                    # No more than implies a minimum of 0
+                    max_goal = goal_raw.split("no more than")[1]
+                    max = re.findall(r"\d+", max_goal)
+                    max = int(max[0])
+                elif "at least" in goal_raw:
+                    max = "NA"
+                else:
+                    max = min
 
             # add requirements to dictionary
             self.report_details["standard_requirements_goals"][description] = {

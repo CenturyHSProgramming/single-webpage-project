@@ -1,13 +1,13 @@
-# Project Name: Single Web Page
+# Project Name: Single Web Page with Style
 
 ## Project Description
 ***GOAL***: Students will be able to write and organize content for a single web page that contains a variety of HTML headers, images, paragraphs, lists, and links and style the content using a variety of CSS techniques.
 
 ### HTML Level = 101
-This project does not meet the requirements for attaining the next level in HTML. For that, we need to create a multi-page website.
+This project does meet the requirements for attaining the next level in HTML. For that, we need to create a multi-page website.
 
 ### CSS Level = 101
-This project does not meet the requirements for attaining the next level in CSS.
+This project does meet the requirements for attaining the next level in CSS.
 
 ## Project Requirements
 ### General
@@ -58,23 +58,15 @@ This project does not meet the requirements for attaining the next level in CSS.
             - Large: AA
 * Project-specific Requirements:
     * Required Selectors:
-        + type
-        + class
-        + nav
-        + ul
-        + a
+        + type: 3 or more
+        + class: 1 or more
+        + id: 1 or more
     * Required Properties:
         + padding
+        + margin
         + border
-        + flex
-    * Bonus Opportunity:
-        + link colors:
-            * +1 for hyperlink colors
-        + hover effects:
-            * +1 for hover
-            * +1 for visited
-            * +1 for active (while holding it down)
-        + link color contrast:
-            +1 for link contrast of AAA
-            +1 for hover contrast of AAA
-            +1 for visited contrast of AAA
+    * Element-Specific Properties:
+        + figure: should contain the following properties:
+            - padding
+            - margin
+            - border
