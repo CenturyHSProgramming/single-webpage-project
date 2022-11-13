@@ -146,3 +146,6 @@ cov.xml
 # Mac OS stuff
 .DS_Store
 */.DS_Stores
+
+# My test_project folder
+tests/test_project

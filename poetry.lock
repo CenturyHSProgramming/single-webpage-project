@@ -1429,7 +1429,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
 name = "virtualenv"
-version = "20.16.6"
+version = "20.16.7"
 description = "Virtual Python Environment builder"
 category = "main"
 optional = false
@@ -1480,7 +1480,7 @@ bracex = ">=2.1.1"
 
 [[package]]
 name = "webcode-tk"
-version = "0.3.2"
+version = "0.3.6"
 description = ""
 category = "main"
 optional = false
@@ -2484,8 +2484,8 @@ urllib3 = [
     {file = "urllib3-1.26.12.tar.gz", hash = "sha256:3fa96cf423e6987997fc326ae8df396db2a8b7c667747d47ddd8ecba91f4a74e"},
 ]
 virtualenv = [
-    {file = "virtualenv-20.16.6-py3-none-any.whl", hash = "sha256:186ca84254abcbde98180fd17092f9628c5fe742273c02724972a1d8a2035108"},
-    {file = "virtualenv-20.16.6.tar.gz", hash = "sha256:530b850b523c6449406dfba859d6345e48ef19b8439606c5d74d7d3c9e14d76e"},
+    {file = "virtualenv-20.16.7-py3-none-any.whl", hash = "sha256:efd66b00386fdb7dbe4822d172303f40cd05e50e01740b19ea42425cbe653e29"},
+    {file = "virtualenv-20.16.7.tar.gz", hash = "sha256:8691e3ff9387f743e00f6bb20f70121f5e4f596cae754531f2b3b3a1b1ac696e"},
 ]
 waitress = [
     {file = "waitress-2.1.2-py3-none-any.whl", hash = "sha256:7500c9625927c8ec60f54377d590f67b30c8e70ef4b8894214ac6e4cad233d2a"},
@@ -2523,8 +2523,8 @@ wcmatch = [
     {file = "wcmatch-8.4.1.tar.gz", hash = "sha256:b1f042a899ea4c458b7321da1b5e3331e3e0ec781583434de1301946ceadb943"},
 ]
 webcode-tk = [
-    {file = "webcode-tk-0.3.2.tar.gz", hash = "sha256:9ad8b0288c0d1a46f8feb958d61425e441b33481447a7f6cf6f762d5841984f2"},
-    {file = "webcode_tk-0.3.2-py3-none-any.whl", hash = "sha256:7b856e317cc861abdeca29c3c248e51408644afce5621eb038e263c1f764e488"},
+    {file = "webcode_tk-0.3.6-py3-none-any.whl", hash = "sha256:ae99fe29cad3167254906e70262937d9b2e9ba2a4b203da8213fd0b149471a14"},
+    {file = "webcode_tk-0.3.6.tar.gz", hash = "sha256:e3d9514a755cb7e0c78cc085a53d67536e47c4403140c4113a8d2ecdbb7bbdb2"},
 ]
 webencodings = [
     {file = "webencodings-0.5.1-py2.py3-none-any.whl", hash = "sha256:a0af1213f3c2226497a97e2b3aa01a7e4bee4f403f95be16fc9acd2947514a78"},

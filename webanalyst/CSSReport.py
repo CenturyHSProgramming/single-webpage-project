@@ -12,8 +12,6 @@ from bs4 import BeautifulSoup
 
 import webanalyst.report as rep
 
-stylesheet = CSSinator.Stylesheet
-
 logging.basicConfig(
     format="%(asctime)s - %(message)s", datefmt="%d-%b-%y %H:%M:%S"
 )
@@ -166,7 +164,7 @@ class CSSReport:
 
         # if there are no styles, we have a major failure
         if not all_styles_in_order:
-            print()
+            print("Oh where have all the styles gone?")
 
         for goal, details in goals:
             if goal == "Font Families":
@@ -801,7 +799,7 @@ class CSSReport:
                 "color": "",
             }
             for styles in all_styles:
-                if filename in styles[0]:
+                if styles[0] in filename:
                     href = styles[1].href
                     if href in global_color_data.keys():
                         details = global_color_data[href]
@@ -1068,7 +1066,10 @@ class CSSReport:
             min = range["min"]
             max = range["max"]
             passed = results >= min and results <= max
-            if passed:
+            # NOTE: a passed means they are within the range
+            # and there are styles being applied
+            styles_applied = self.get_styles_applied()
+            if passed and styles_applied:
                 results = "Passed"
             else:
                 results = "Failed"
@@ -1076,6 +1077,11 @@ class CSSReport:
             self.report_details["standard_requirements_results"][key] = results
         except KeyError:
             return None
+
+    def get_styles_applied(self):
+        """returns whether any styles have been applied"""
+        applied = self.css_files or self.stylesheet_objects
+        return bool(applied)
 
     def get_css_errors(self):
         number = 0
@@ -1330,7 +1336,7 @@ class CSSReport:
             style_tags = html.get_elements("style", file)
             for tag in style_tags:
                 filename = os.path.basename(file)
-                css_object = stylesheet(filename, tag.string)
+                css_object = CSSinator.stylesheet(filename, tag.string)
                 self.style_tag_contents.append(css_object)
             self.report_details["style_tags"].append((file, len(style_tags)))
         return self.report_details["style_tags"]
@@ -1349,13 +1355,11 @@ class CSSReport:
             if not is_linked:
                 continue
             try:
-                css_code = clerk.get_css_from_stylesheet(file)
-
-                css = stylesheet(filename, css_code)
+                css_code = clerk.file_to_string(file)
+                css = CSSinator.Stylesheet(filename, css_code, "file")
                 self.stylesheet_objects.append(css)
             except Exception as e:
-                print("Something went wrong with getting stylesheet objects")
-                print(e)
+                print("We have an exception: {}".format(e.args))
 
     def file_is_linked(self, filename):
         for sheets in self.linked_stylesheets.values():

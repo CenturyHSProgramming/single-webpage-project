@@ -5,8 +5,8 @@ import file_clerk.clerk as clerk
 import webcode_tk.html as html
 from bs4 import BeautifulSoup
 
-import webanalyst.HTMLReport as HTMLReport
 import webanalyst.CSSReport as CSSReport
+import webanalyst.HTMLReport as HTMLReport
 
 logging.basicConfig(
     format="%(asctime)s - %(message)s", datefmt="%d-%b-%y %H:%M:%S"
@@ -370,7 +370,7 @@ if __name__ == "__main__":
     # 4. Go to report/report.html for results
 
     # project path
-    project_path = "project/"
+    project_path = "tests/test_project/"
     project_page = Report(project_path)
     project_page.generate_report()
     print(project_page.general_report)
