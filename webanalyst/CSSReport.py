@@ -1045,7 +1045,7 @@ class CSSReport:
         for ruleset in declaration.rulesets:
             if ruleset.declaration_block:
                 for declaration in ruleset.declaration_block.declarations:
-                    if declaration.property in ("font", "font-family"):
+                    if declaration.property.lower() in ("font", "font-family"):
                         families.append(declaration.value)
         return families
 
@@ -1413,7 +1413,7 @@ class CSSReport:
             style_tags = html.get_elements("style", file)
             for tag in style_tags:
                 filename = os.path.basename(file)
-                css_object = CSSinator.stylesheet(filename, tag.string)
+                css_object = CSSinator.Stylesheet(filename, tag.string)
                 self.style_tag_contents.append(css_object)
             self.report_details["style_tags"].append((file, len(style_tags)))
         return self.report_details["style_tags"]
