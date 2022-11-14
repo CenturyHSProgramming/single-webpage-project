@@ -215,12 +215,45 @@ class CSSReport:
                     if "fail" in global_headers_results.lower():
                         meets_color = False
                     color_settings_results += global_headers_results
+
+                # check for color contrast
+                goal_key = "Color Contrast (readability)"
+                contrast_goals = goals[1][1][goal_key]
+                contrast_description = str(contrast_goals).split(
+                    "description': '"
+                )[1][:-1]
+                description_list = contrast_description.split("', '")
+                contrast_description = description_list[0].capitalize() + ": "
+                contrast_description += description_list[1].replace("'", "")
+                contrast_description += (
+                    "; " + description_list[2].replace("'", "") + "."
+                )
+                normal_goal = contrast_goals.get("Normal")
+                large_goal = contrast_goals.get("Large")
+
+                for page, stylesheet in all_styles_in_order:
+                    color_contrasts = self.get_color_contrast_results(
+                        stylesheet, normal_goal, large_goal
+                    )
+                    print(color_contrasts)
+                # Get contrast of header colors
+
                 self.report_details["general_styles_goals"]["Color Settings"][
                     "details"
                 ]["meets"] = meets_color
                 self.report_details["general_styles_goals"]["Color Settings"][
                     "results"
                 ] = color_settings_results
+
+    def get_color_contrast_results(self, styles, normal, large):
+        results = {}
+        global_results = CSSinator.get_global_color_details(styles.rulesets)
+        self.get_color_data()
+        header_results = CSSinator.get_header_color_details(styles.rulesets)
+
+        results["Normal"] = global_results
+        results["Large"] = header_results
+        return results
 
     def get_global_headers_goals(self, goals):
         message = ""
@@ -500,63 +533,98 @@ class CSSReport:
         num_files_colors_set = len(global_colors)
         if num_files_colors_set < num_html_files:
             global_color_errors += "Global colors not set on all pages\n"
-        self.get_global_color_contrast(global_colors)
+        global_results = self.get_global_color_contrast(global_colors)
+        if "Failure" in global_results:
+            color_data["global"]["passes"] = False
+        else:
+            color_data["global"]["passes"] = True
+        color_data["global"]["message"] = global_results
 
         header_color_errors = ""
         header_colors = self.get_final_header_colors(all_styles, global_colors)
         num_files_colors_set = len(header_colors)
         if num_files_colors_set < num_html_files:
             header_color_errors += "Header colors not set on all pages\n"
-        header_color_contrast = self.get_header_color_contrast(header_colors)
+        header_color_contrast = self.get_header_color_contrast(
+            header_colors, global_colors
+        )
         print(header_color_contrast)
         return color_data
 
-    def get_header_color_contrast(self, header_colors, goals=""):
+    def get_header_color_contrast(
+        self, header_colors, global_colors, goals=""
+    ):
         results = ""
         # default target goal is AAA, but if it's just AA, change it
         if goals and "AAA" not in goals:
             # double check
             if "AA" in goals:
                 pass
-        for file, details in header_colors.items():
-            for selector in details.values():
-                # get the color unless it's not set,
-                # then get the global color
-                color = selector.get("color")
-                if not color:
-                    color = selector.get("global-color")
-                    if not color:
-                        color = "#000000"
-                color = self.get_color_hex(color)
-                if "warning" in color.lower():
-                    results += "WARNING for " + file["file"] + ": "
-                    results += color
-                    continue
-                bg_color = selector.get("bg-color")
-                if not bg_color:
-                    bg_color = selector.get("global-bg-color")
-                    if not bg_color:
-                        bg_color = "#ffffff"
-                bg_color = self.get_color_hex(bg_color)
-                if "warning" in bg_color.lower():
-                    results += "WARNING for " + file["file"] + ": "
-                    results += bg_color
-                    continue
-                # Cannot yet deal with gradients, so check first before crashing
+        for item in global_colors:
+            html_file = item.get("html_file")
+            css_file = item.get("css_file")
+            global_bg = item.get("bg-color")
+            global_color = item.get("color")
+            for item in header_colors:
+                filename = html_file.split("/")[-1]
+                selector = item.get("selector")
 
-                # Test for contrast
-                contrast_report = colors.get_color_contrast_report(
-                    color, bg_color
-                )
-                target = self.get_color_contrast_target("Large")
-                passes = contrast_report.get(target)
-                if passes == "Fail":
-                    selector = list(details.keys())[0]
-                    if not results:
-                        results = "<b>Fail</b>: \n<ul>"
-                    results += "<li>Page " + file + ": " + selector
-                    results += " fails color contrast report for " + target
-                    results += "</li>\n"
+                # only operate on same file
+                if (
+                    item.get("html_file") == html_file
+                    and item.get("css_file") == css_file
+                ):
+                    # attempt all colors from selector, to global, to default
+                    color = item.get("color")
+                    if not color:
+                        color = item.get("global-color")
+                        if not color:
+                            if not global_color:
+                                color = "#000000"
+                            else:
+                                color = global_color
+                    color = self.get_color_hex(color)
+                    if "warning" in color.lower():
+                        results += "WARNING for " + filename + ": "
+                        results += color
+                        continue
+
+                    # check for BG going all the way to default if necessary
+                    bg_color = item.get("bg-color")
+                    if not bg_color:
+                        bg_color = item.get("global-bg-color")
+                        if not bg_color:
+                            if not global_bg:
+                                bg_color = "#ffffff"
+                            else:
+                                bg_color = global_bg
+                    bg_color = self.get_color_hex(bg_color)
+                    if "warning" in bg_color.lower():
+                        results += "WARNING for " + filename + ": "
+                        results += bg_color
+                        continue
+                    # Cannot yet deal with gradients, so check first before crashing
+
+                    # Test for contrast
+                    contrast_report = colors.get_color_contrast_report(
+                        color, bg_color
+                    )
+                    target = self.get_color_contrast_target("Large")
+                    passes = contrast_report.get(target)
+                    if passes == "Fail":
+                        if not results:
+                            results = "<b>Fail</b>: \n<ul>"
+                        results += "<li>Page " + filename + ": " + selector
+                        results += " fails color contrast report for " + target
+                        results += "</li>\n"
+                    else:
+                        if not results:
+                            results = "<b>Success</b>: \n<ul>"
+                        results += "<li>Page " + filename + ": " + selector
+                        results += (
+                            " passes color contrast report for " + target
+                        )
+                        results += "</li>\n"
         if results:
             results += "</ul>"
         return results
@@ -605,15 +673,23 @@ class CSSReport:
     def process_contrast_report(self, report, target):
         """checks to see if passes at best level or not"""
         results = ""
+
+        # capture contrast_report to modify
+        general_goals = self.report_details.get("general_styles_goals")
+        contrast_key = "Color Contrast (readability)"
+        contrast_report = general_goals["Color Settings"][contrast_key]
+
         # extract both size and rating
         size, rating = target.split()
+        meets_key = "Meets " + target
         if report[target] == "Pass":
             results += "Success: page passes at a " + rating
             results += " rating for " + size.lower() + "-sized text.\n"
+            contrast_report[meets_key] = True
         else:
             results += "Failure: page does NOT pass at a " + rating
             results += " rating for " + size.lower() + "-sized text.\n"
-
+            contrast_report[meets_key] = False
         return results
 
     def get_color_hex(self, color):
@@ -708,6 +784,7 @@ class CSSReport:
                 "context-color": "",
             }
             for styles in all_styles:
+                filename = filename.split("/")[-1]
                 if filename in styles[0]:
                     href = styles[1].href
 
