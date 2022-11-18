@@ -604,6 +604,12 @@ class CSSReport:
                         results += bg_color
                         continue
                     # Cannot yet deal with gradients, so check first before crashing
+                    gradients = self.get_gradients(header_colors)
+                    if gradients:
+                        print(
+                            "WARNING: we have gradients and should do something"
+                        )
+                        continue
 
                     # Test for contrast
                     contrast_report = colors.get_color_contrast_report(
@@ -628,6 +634,40 @@ class CSSReport:
         if results:
             results += "</ul>"
         return results
+
+    def get_gradients(self, color_data: list) -> list:
+        """Returns a list of dictionaries of files that use gradients.
+
+        Since any given color (background or text) could potentially be a gradient,
+        we need to inspect each file that uses color data to determine if it uses a
+        gradient.
+
+        If the file uses a gradient, then we must identify the file name, which property
+        uses a gradient (color or bg-color), and a list of the lightest and the darkest
+        color for each property that uses a gradient.
+
+        Args:
+            color_data (list): a list of dictionaries that represent a file and
+                its background and foreground colors.
+
+        Returns:
+            gradients (list): a list of files with gradient data"""
+        gradients = []
+        for file in color_data:
+            gradient_data = {}
+            filename = file.get("css_file")
+            bg_color = file.get("bg-color")
+            color = file.get("color")
+            if CSSinator.is_gradient(bg_color):
+                gradient_list = CSSinator.process_gradient(bg_color)
+                gradient_data[filename] = {"bg_color_gradients": gradient_list}
+            if CSSinator.is_gradient(color):
+                gradient_list = CSSinator.process_gradient(color)
+                gradient_data[filename] = {"color_gradients": gradient_list}
+            if gradient_data:
+                file["gradient_data"] = gradient_data
+                gradients.append(gradient_data)
+        return gradients
 
     def get_global_color_contrast(self, global_colors):
         results = ""
