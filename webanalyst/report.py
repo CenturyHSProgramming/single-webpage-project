@@ -134,6 +134,7 @@ class GeneralReport:
                 "meets_WPS": False,
             },
         }
+        self.meets_requirements = False
 
     def generate_report(self):
         self.set_title()
@@ -292,6 +293,24 @@ class GeneralReport:
         self.report_details["writing_goal_results"]["meets_WPS"] = (
             WPS > min_wps and WPS < max_wps
         )
+
+        # Get overall results (start by assuming it passes until it doesn't)
+        self.meets_requirements = True
+
+        # Check to see if all general report requirements are met
+        num_files_results = self.report_details.get("num_files_results")
+        for result in num_files_results.values():
+            if not result:
+                self.meets_requirements = False
+
+        # Check writing goals
+        writing_goals = self.report_details.get("writing_goal_results")
+        meets_SPP = writing_goals.get("meets_SPP")
+        if not meets_SPP:
+            self.meets_requirements = False
+        meets_WPS = writing_goals.get("meets_WPS")
+        if not meets_WPS:
+            self.meets_requirements = False
 
     def publish_results(self):
         # Get report
