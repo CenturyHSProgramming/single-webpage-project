@@ -1480,7 +1480,7 @@ bracex = ">=2.1.1"
 
 [[package]]
 name = "webcode-tk"
-version = "0.3.6"
+version = "0.3.7"
 description = ""
 category = "main"
 optional = false
@@ -2523,8 +2523,8 @@ wcmatch = [
     {file = "wcmatch-8.4.1.tar.gz", hash = "sha256:b1f042a899ea4c458b7321da1b5e3331e3e0ec781583434de1301946ceadb943"},
 ]
 webcode-tk = [
-    {file = "webcode_tk-0.3.6-py3-none-any.whl", hash = "sha256:ae99fe29cad3167254906e70262937d9b2e9ba2a4b203da8213fd0b149471a14"},
-    {file = "webcode_tk-0.3.6.tar.gz", hash = "sha256:e3d9514a755cb7e0c78cc085a53d67536e47c4403140c4113a8d2ecdbb7bbdb2"},
+    {file = "webcode_tk-0.3.7-py3-none-any.whl", hash = "sha256:d7b78b330c3f544dec200ab2217a3ce34b5e1be92c72adf00fb032802f557402"},
+    {file = "webcode_tk-0.3.7.tar.gz", hash = "sha256:1ee8f5d1d4d6de22f7586715e4cb38eaebd829cb207fc822ed2529668b61156d"},
 ]
 webencodings = [
     {file = "webencodings-0.5.1-py2.py3-none-any.whl", hash = "sha256:a0af1213f3c2226497a97e2b3aa01a7e4bee4f403f95be16fc9acd2947514a78"},

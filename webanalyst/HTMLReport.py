@@ -23,6 +23,7 @@ class HTMLReport:
         self.html_requirements_list = []
         self.html_files = []
         self.linked_stylesheets = {}
+        self.meets_requirements = False
         self.style_tags = []
         self.validator_errors = {"HTML": {}, "CSS": {}}
         self.validator_warnings = {"HTML": {}, "CSS": {}}
@@ -273,7 +274,12 @@ class HTMLReport:
         # get titles and run them through validator
         for file_path in self.html_files:
             # Get error objects
-            errors_in_file = val.get_markup_validity(file_path)
+            try:
+                errors_in_file = []
+                errors_in_file = val.get_markup_validity(file_path)
+            except Exception as e:
+                print("Warning: we have no connection.")
+                print(e)
             # Get number of errors
             num_errors = len(errors_in_file)
             page_name = clerk.get_file_name(file_path)
@@ -472,7 +478,7 @@ class HTMLReport:
 
         # Check the overall HTML goals to see if it meets or not
         output = '<div id="overall-results">'
-        if self.report_details.get("meets_requirements"):
+        if self.meets_requirements:
             output += (
                 '<p><strong class="success">Congratulations! your project'
             )
@@ -844,7 +850,7 @@ class HTMLReport:
         if not meets_validator:
             meets = False
         if not meets:
-            self.report_details["meets_requirements"] = False
+            self.meets_requirements = False
 
 
 if __name__ == "__main__":

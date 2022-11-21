@@ -34,6 +34,7 @@ class CSSReport:
         self.style_tag_contents = []
         self.num_style_tags = 0
         self.linked_stylesheets = {}
+        self.meets_requirements = False
         self.order_of_css_by_file = {}
         self.pages_contain_same_css_files = False
         self.repeat_selectors = {}
@@ -80,6 +81,7 @@ class CSSReport:
         self.get_standard_requirements_results()
         self.get_general_styles_goals()
         self.get_general_styles_results()
+        self.get_css_results()
         self.publish_results()
 
     def get_general_styles_goals(self):
@@ -775,6 +777,10 @@ class CSSReport:
                     if stylesheet:
                         all_styles.append((file, stylesheet))
 
+        # Loop through style tags and do the same
+        for tag in self.style_tag_contents:
+            file = tag.href
+            all_styles.append((file, tag))
         return all_styles
 
     def get_styletag_object(self, file):
@@ -1463,7 +1469,7 @@ class CSSReport:
         return self.num_style_tags
 
     def get_css_code(self):
-        # extract content from all CSS files
+        """extract content from all CSS files"""
         self.css_files = clerk.get_all_files_of_type(self.__dir_path, "css")
         for file in self.css_files:
             # First check to make sure the file was actually used in the project
@@ -1477,6 +1483,8 @@ class CSSReport:
                 self.stylesheet_objects.append(css)
             except Exception as e:
                 print("We have an exception: {}".format(e.args))
+
+        # extract Stylesheets from style tags
 
     def file_is_linked(self, filename):
         for sheets in self.linked_stylesheets.values():
@@ -1494,6 +1502,9 @@ class CSSReport:
             # Get code
             code = clerk.file_to_string(file_path)
             errors_in_file = val.validate_css(code)
+            if errors_in_file:
+                for error in errors_in_file:
+                    print(error.contents)
             # Add to number of errors
             errors += len(errors_in_file)
             page_name = clerk.get_file_name(file_path)
@@ -1773,6 +1784,20 @@ class CSSReport:
                     "", page, error_str, cumulative_errors_string, meets
                 )
             return results
+
+    def get_css_results(self):
+        """determines overall results for CSS goals"""
+        # We meet until we don't
+        meets = True
+        report_details = self.report_details
+
+        # check CSS validator results
+        goals = report_details.get("css_validator_goals")
+        actual = report_details.get("css_validator_errors")
+        if actual > goals:
+            meets = False
+
+        self.meets_requirements = meets
 
 
 if __name__ == "__main__":
