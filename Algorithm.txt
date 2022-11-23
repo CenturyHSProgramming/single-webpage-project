@@ -1,0 +1,26 @@
+Goal: allow us...
+    1. to check to see if all HTML files link to same CSS
+    2. get styles in order of appearance
+    3. check for DRY (across all css files - not style tags)
+    4. check across all CSS for meeting requirements
+    5. determining whether all HTML files meet all CSS requirements
+
+SET CSS_file_data to empty list
+FOREACH file in folder
+    GET Head tag from text
+    GET filename
+    SET stylesheets to empty string
+    SET page_CSS to list
+    FOREACH tag in Head tags
+        IF tag is a link to local sheet
+            GET CSS from tag contents
+            APPEND
+
+
+Data Dictionary:
+CSS_file_data list of page_CSS
+HEAD tag object contains all children tags of HEAD
+filename string that represents an HTML file's name
+stylesheets is a string of all CSS code in order of appearance (same order as links to local CSS files)
+page_CSS a list of file_data
+file_data a tuple of
