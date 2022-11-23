@@ -40,6 +40,8 @@ class CSSReport:
         self.repeat_selectors = {}
         self.repeat_declarations_blocks = {}
         self.set_readme_list()
+        self.styles_applied_consistently = False
+        self.styles_applied_to_all_pages = False
         self.stylesheet_objects = []
         self.report_details = {
             "css_level": "",
@@ -1397,20 +1399,19 @@ class CSSReport:
         self.order_of_css_by_file = file_dict
 
     def check_pages_for_same_css_files(self):
-        if len(self.html_files) == 1:
-            # Should we also check to make sure that one page is using css?
-            linked_stylesheets = list(self.linked_stylesheets.values())
-            for sheet in linked_stylesheets:
-                if sheet:
-                    return True
-            return False
-        files = self.extract_only_style_tags_from_css_files(
-            self.project_css_by_html_file
+        """determine if styles are applied on all pages and applied consistently"""
+        # Assume it's all done correctly until proven otherwise
+        applies_styles = True
+        styles_list = list(self.order_of_css_by_file.values())
+        for styles in styles_list:
+            if not styles:
+                applies_styles = False
+
+        applied_consistently = all(
+            elem == styles_list[0] for elem in styles_list
         )
-        files = list(files.values())
-        self.pages_contain_same_css_files = all(
-            file == files[0] for file in files
-        )
+        self.styles_applied_to_all_pages = applies_styles
+        self.styles_applied_consistently = applied_consistently
 
     def extract_only_style_tags_from_css_files(self, files_with_css):
         results = {}

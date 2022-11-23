@@ -5,6 +5,11 @@ Goal: allow us...
     4. check across all CSS for meeting requirements
     5. determining whether all HTML files meet all CSS requirements
 
+Actions:
+    * Keep order_of_css_by_file - use it to determine...
+        if all files link to same CSS
+        order of appearance
+
 Guidelines:
     * Don't reinvent the wheel
     * Don't repeat myself
