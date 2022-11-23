@@ -5,6 +5,17 @@ Goal: allow us...
     4. check across all CSS for meeting requirements
     5. determining whether all HTML files meet all CSS requirements
 
+Guidelines:
+    * Don't reinvent the wheel
+    * Don't repeat myself
+        - don't make more stylesheet objects than I have to
+
+Questions:
+    * Do I care about the cascade?
+        - I might
+        - If so, I should get a master stylesheet that is in the order of appearance
+    * What's already in place?
+
 SET CSS_file_data to empty list
 FOREACH file in folder
     GET Head tag from text

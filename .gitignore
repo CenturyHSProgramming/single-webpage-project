@@ -149,3 +149,4 @@ cov.xml
 
 # My test_project folder
 tests/test_project
+tests/large_project/images/

@@ -43,10 +43,11 @@ This project does meet the requirements for attaining the next level in CSS.
 
 ### CSS
 * Standard Requirements:
-    * Styles Applied: at least 1 stylesheet or style tag
+    * Styles Applied: at least 1 stylesheet or style tag for each page
+    * Styles Applied consistently: on all pages (links to the same external stylesheets and order of links)
     * CSS Errors: no more than 2 (total)
-    * Repeat selectors: None (per page)
-    * Repeat declaration blocks: None (per page)
+    * Repeat selectors: None (per page) unless a page both links to external stylesheets and has a style tag after all link tags
+    * Repeat declaration blocks: None (per page) unless a page both links to external stylesheets and has a style tag after all link tags
 * General Styles:
     * Font Families: number of font families to be set
         + Minimum: 1
