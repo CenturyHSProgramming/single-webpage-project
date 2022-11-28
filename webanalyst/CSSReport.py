@@ -30,6 +30,7 @@ class CSSReport:
         self.min_num_css_files = 0
         self.max_num_css_files = 0
         self.css_errors = {}
+        self.css_file_data = []
         self.css_files = []
         self.style_tag_contents = []
         self.num_style_tags = 0
@@ -1470,22 +1471,26 @@ class CSSReport:
         return self.num_style_tags
 
     def get_css_code(self):
-        """extract content from all CSS files"""
-        self.css_files = clerk.get_all_files_of_type(self.__dir_path, "css")
-        for file in self.css_files:
-            # First check to make sure the file was actually used in the project
-            filename = clerk.get_file_name(file)
-            is_linked = self.file_is_linked(filename)
-            if not is_linked:
-                continue
-            try:
-                css_code = clerk.file_to_string(file)
-                css = CSSinator.Stylesheet(filename, css_code, "file")
-                self.stylesheet_objects.append(css)
-            except Exception as e:
-                print("We have an exception: {}".format(e.args))
+        """extract content from all CSS files
 
-        # extract Stylesheets from style tags
+        Loop through order_of_css_by_file. At each file, get the position of the style
+        tag. If the style tag is NOT at the end, then get all code together as a string
+        and convert it into 1 stylesheet.
+
+        If, however, the style tag is at the end, get all CSS code from the stylesheets
+        and convert them to a stylesheet object, then convert styletag to a stylesheet
+        object (unless I already did that, then why reinvent the wheel."""
+        for file, css_list in self.order_of_css_by_file.items():
+            if css_list:
+                if self.styletag_at_end(css_list):
+                    print("style is at the end")
+                else:
+                    print("not at end")
+            else:
+                print("this page has no list")
+
+    def styletag_at_end(self, css_list: list) -> bool:
+        return css_list[-1] == "style tag"
 
     def file_is_linked(self, filename):
         for sheets in self.linked_stylesheets.values():
