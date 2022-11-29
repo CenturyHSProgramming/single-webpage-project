@@ -1483,11 +1483,28 @@ class CSSReport:
         for file, css_list in self.order_of_css_by_file.items():
             if css_list:
                 if self.styletag_at_end(css_list):
-                    print("style is at the end")
+                    combined_style_code = ""
+                    for sheet in css_list:
+                        filepath = self.__dir_path + sheet
+                        combined_style_code += clerk.file_to_string(filepath)
                 else:
-                    print("not at end")
+                    combined_css = self.get_combined_css(file, css_list)
+                    combined_styletag = CSSinator.Stylesheet(
+                        file, combined_css, "combined"
+                    )
+                    print(combined_styletag.type)
+
+    def get_combined_css(self, file, css_list):
+        combined_style_code = ""
+        for sheet in css_list:
+            if sheet == "style tag":
+                for tag in self.style_tag_contents:
+                    if tag.href == file:
+                        combined_style_code += tag.text
             else:
-                print("this page has no list")
+                filepath = self.__dir_path + sheet
+                combined_style_code += clerk.file_to_string(filepath)
+        return combined_style_code
 
     def styletag_at_end(self, css_list: list) -> bool:
         return css_list[-1] == "style tag"
