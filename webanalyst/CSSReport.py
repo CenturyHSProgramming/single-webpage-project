@@ -22,6 +22,7 @@ report_path = "report/report.html"
 class CSSReport:
     def __init__(self, readme_list, dir_path):
         self.__dir_path = dir_path
+        self.at_import_url_errors = []
         self.html_level = "0"
         self.readme_list = readme_list
         self.html_files = []
@@ -1475,10 +1476,63 @@ class CSSReport:
             style_tags = html.get_elements("style", file)
             for tag in style_tags:
                 filename = os.path.basename(file)
-                css_object = CSSinator.Stylesheet(filename, tag.string)
+                # get tag string and check for relative @imports
+                tag_string = tag.string
+                if "@import" in tag_string:
+                    tag_split = tag_string.split("@import")
+
+                    # reset tag_string and rebuild by including the imported code
+                    tag_string = ""
+                    for code in tag_split:
+                        code = code.strip()
+                        if code:
+                            if "url(" not in code:
+                                tag_string += code
+                            else:
+                                import_result = self.get_at_import_code(code)
+                                if "ERROR" in import_result:
+                                    self.at_import_url_errors.append(
+                                        import_result
+                                    )
+                                else:
+                                    tag_string += import_result
+
+                css_object = CSSinator.Stylesheet(filename, tag_string)
                 self.style_tag_contents.append(css_object)
             self.report_details["style_tags"].append((file, len(style_tags)))
         return self.report_details["style_tags"]
+
+    def get_at_import_code(self, at_import_string: str) -> str:
+        """returns CSS from at_import_string, but only if it's a locally imported
+        file"""
+        code = ""
+        string_parts = re.split("['\"]", at_import_string)
+        if len(string_parts) > 1:
+            code = string_parts[1]
+            if "../" in code:
+                # get path while going back a folder
+                filepath = self._CSSReport__dir_path
+                filepath = filepath.split("/")
+                if not filepath[-1]:
+                    filepath = filepath[:-2]
+                else:
+                    filepath = filepath[:-1]
+                filepath = "/".join(filepath)
+                code = code.split("/")[1]
+                filepath += "/" + code
+                try:
+                    code = clerk.file_to_string(filepath)
+                except FileNotFoundError:
+                    code = "ERROR: the link to {}".format(filepath)
+                    code += ", does not exist."
+                    code += "Check the @import url path."
+                    return code
+            if "http" not in code:
+                filepath = self._CSSReport__dir_path
+                code = code.split("/")[1]
+                filepath += code
+                code = clerk.file_to_string(filepath)
+        return code
 
     def get_num_style_tags(self):
         self.num_style_tags = len(self.report_details["style_tags"])
