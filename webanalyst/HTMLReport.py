@@ -554,31 +554,43 @@ class HTMLReport:
 
                     # clean message of smart quotes for HTML rendering
                     message = message.replace("“", '"').replace("”", '"')
-                    last_line = error["lastLine"]
-                    try:
-                        first_line = error["firstLine"]
-                    except Exception as e:
+                    last_line = error.get("lastLine")
+                    first_line = error.get("firstLine")
+                    if not first_line and last_line:
                         first_line = last_line
-                        print("We have an exception " + str(e))
-                    last_column = error["lastColumn"]
-                    try:
-                        first_column = error["firstColumn"]
-                    except Exception as e:
+                    last_column = error.get("lastColumn")
+                    first_column = error.get("firstColumn")
+                    if last_column and not first_column:
                         first_column = last_column
-                        print("We have an exception " + str(e))
+
                     # render any HTML code viewable on the screen
-                    extract = (
-                        error["extract"]
-                        .replace("<", "&lt;")
-                        .replace(">", "&gt;")
-                    )
+                    if "<" in message or ">" in message:
+                        message = message.replace("<", "&lt;").replace(
+                            ">", "&gt;"
+                        )
+                    if error.get("extract"):
+                        extract = (
+                            error["extract"]
+                            .replace("<", "&lt;")
+                            .replace(">", "&gt;")
+                        )
+                        # place extract inside of a code tag
+                        extract = "<code>" + extract + "</code>"
+                    else:
+                        extract = ""
 
-                    # place extract inside of a code tag
-                    extract = "<code>" + extract + "</code>"
-
-                    location = "From line {}, column {}; to line {}, column {}.".format(
-                        first_line, first_column, last_line, last_column
-                    )
+                    # get location if there is a location
+                    location = ""
+                    if (first_line and last_line) or (
+                        first_column and last_column
+                    ):
+                        location = "From line {}, column {}".format(
+                            first_line,
+                            first_column,
+                        )
+                        location += "; to line {}, column {}.".format(
+                            last_line, last_column
+                        )
 
                     new_row = rep.Report.get_report_results_string(
                         tr_class, page, message, location, extract
@@ -819,7 +831,9 @@ class HTMLReport:
         files_with_inline_styles = []
         for file in self.html_files:
             markup = clerk.file_to_string(file)
-            has_inline_styles = html.uses_inline_styles(markup)
+            has_inline_styles = False
+            if markup:
+                has_inline_styles = html.uses_inline_styles(markup)
             if has_inline_styles:
                 filename = clerk.get_file_name(file)
                 files_with_inline_styles.append(filename)

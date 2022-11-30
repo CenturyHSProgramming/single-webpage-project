@@ -676,6 +676,7 @@ class CSSReport:
 
     def get_global_color_contrast(self, global_colors):
         results = ""
+        contrast_report = {}
         for file in global_colors:
             color = file.get("color")
             color = self.get_color_hex(color)
@@ -689,8 +690,15 @@ class CSSReport:
                 results += "WARNING for " + file["file"] + ": "
                 results += color
                 continue
-            # Test for contrast
-            contrast_report = colors.get_color_contrast_report(color, bg_color)
+            # Test for contrast but only if we have both colors
+            if color or bg_color:
+                if not color:
+                    color = "#000000"
+                if not bg_color:
+                    bg_color = "#ffffff"
+                contrast_report = colors.get_color_contrast_report(
+                    color, bg_color
+                )
             results += "Results for " + file["html_file"] + ": "
 
             target = self.get_color_contrast_target("Normal")
@@ -1315,19 +1323,24 @@ class CSSReport:
         declaration_blocks = {}
         for sheet in self.style_tag_contents:
             for ruleset in sheet.rulesets:
-                declaration_block = "{" + ruleset.declaration_block.text
-                source = sheet.href
-                try:
-                    if declaration_blocks[declaration_block]:
-                        declaration_blocks[declaration_block].append(source)
-                    else:
+                if ruleset.declaration_block:
+                    declaration_block = "{" + ruleset.declaration_block.text
+                    source = sheet.href
+                    try:
+                        if declaration_blocks[declaration_block]:
+                            declaration_blocks[declaration_block].append(
+                                source
+                            )
+                        else:
+                            declaration_blocks[declaration_block] = [
+                                source,
+                            ]
+                    except KeyError:
                         declaration_blocks[declaration_block] = [
                             source,
                         ]
-                except KeyError:
-                    declaration_blocks[declaration_block] = [
-                        source,
-                    ]
+                if "@import" in ruleset._Ruleset__text:
+                    continue
         for sheet in self.stylesheet_objects:
             for ruleset in sheet.rulesets:
                 # it's possible someone places html, so only process
@@ -1388,15 +1401,16 @@ class CSSReport:
             filename = clerk.get_file_name(file)
             file_dict[filename] = []
             head_children = self.get_children(file, "head")
-            for element in head_children:
-                tag = element.name
-                if tag == "link" or tag == "style":
-                    source = element.attrs.get("href")
-                    if source:
-                        if "http" not in source and ".css" in source[-4:]:
-                            file_dict[filename].append(source)
-                    else:
-                        file_dict[filename].append("style tag")
+            if head_children:
+                for element in head_children:
+                    tag = element.name
+                    if tag == "link" or tag == "style":
+                        source = element.attrs.get("href")
+                        if source:
+                            if "http" not in source and ".css" in source[-4:]:
+                                file_dict[filename].append(source)
+                        else:
+                            file_dict[filename].append("style tag")
         self.order_of_css_by_file = file_dict
 
     def check_pages_for_same_css_files(self):
@@ -1485,8 +1499,12 @@ class CSSReport:
                 if self.styletag_at_end(css_list):
                     combined_style_code = ""
                     for sheet in css_list:
-                        filepath = self.__dir_path + sheet
-                        combined_style_code += clerk.file_to_string(filepath)
+                        if sheet != "style tag":
+                            filepath = self.__dir_path + sheet
+                            combined_style_code += clerk.file_to_string(
+                                filepath
+                            )
+
                 else:
                     combined_css = self.get_combined_css(file, css_list)
                     combined_styletag = CSSinator.Stylesheet(
