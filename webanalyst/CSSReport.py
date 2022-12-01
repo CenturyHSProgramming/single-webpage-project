@@ -1489,7 +1489,9 @@ class CSSReport:
                             if "url(" not in code:
                                 tag_string += code
                             else:
-                                import_result = self.get_at_import_code(code)
+                                import_result = self.get_at_import_code(
+                                    code, filename
+                                )
                                 if "ERROR" in import_result:
                                     self.at_import_url_errors.append(
                                         import_result
@@ -1502,7 +1504,7 @@ class CSSReport:
             self.report_details["style_tags"].append((file, len(style_tags)))
         return self.report_details["style_tags"]
 
-    def get_at_import_code(self, at_import_string: str) -> str:
+    def get_at_import_code(self, at_import_string: str, filename: str) -> str:
         """returns CSS from at_import_string, but only if it's a locally imported
         file"""
         code = ""
@@ -1523,13 +1525,15 @@ class CSSReport:
                 try:
                     code = clerk.file_to_string(filepath)
                 except FileNotFoundError:
-                    code = "ERROR: the link to {}".format(filepath)
+                    code = "<b>ERROR in {}</b>".format(filename)
+                    code += ": the link to {}".format(filepath)
                     code += ", does not exist."
                     code += "Check the @import url path."
                     return code
             if "http" not in code:
                 filepath = self._CSSReport__dir_path
-                code = code.split("/")[1]
+                if "/" in code:
+                    code = code.split("/")[1]
                 filepath += code
                 code = clerk.file_to_string(filepath)
         return code
