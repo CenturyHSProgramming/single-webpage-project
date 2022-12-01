@@ -1566,7 +1566,26 @@ class CSSReport:
                             combined_style_code += clerk.file_to_string(
                                 filepath
                             )
-
+                        else:
+                            # we've combined all link tag strings
+                            # it's time to make a stylesheet (if there is code)
+                            if combined_style_code:
+                                combined_stylesheet = CSSinator.Stylesheet(
+                                    file, combined_style_code
+                                )
+                                css_file_data = self.order_of_css_by_file[file]
+                                css_file_data[
+                                    "combined_stylesheets"
+                                ] = combined_stylesheet
+                            styletag_code = self.get_combined_css(
+                                file, css_list
+                            )
+                            styletag_sheet = CSSinator.Stylesheet(
+                                file, styletag_code, "style tag"
+                            )
+                            self.order_of_css_by_file[file].append(
+                                styletag_sheet
+                            )
                 else:
                     combined_css = self.get_combined_css(file, css_list)
                     combined_styletag = CSSinator.Stylesheet(
