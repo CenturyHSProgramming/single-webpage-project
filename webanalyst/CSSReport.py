@@ -703,8 +703,12 @@ class CSSReport:
             results += "Results for " + file["html_file"] + ": "
 
             target = self.get_color_contrast_target("Normal")
-            results += self.process_contrast_report(contrast_report, target)
-
+            if contrast_report:
+                results += self.process_contrast_report(
+                    contrast_report, target
+                )
+            else:
+                results += "FAIL: "
         return results
 
     def get_color_contrast_target(self, size):
