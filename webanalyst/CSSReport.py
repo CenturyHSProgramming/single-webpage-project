@@ -1558,6 +1558,7 @@ class CSSReport:
         object (unless I already did that, then why reinvent the wheel."""
         for file, css_list in self.order_of_css_by_file.items():
             if css_list:
+                has_one_sheet = len(css_list) == 1
                 if self.styletag_at_end(css_list):
                     combined_style_code = ""
                     for sheet in css_list:
@@ -1586,6 +1587,9 @@ class CSSReport:
                             self.order_of_css_by_file[file].append(
                                 styletag_sheet
                             )
+                        # Only loop one time if there is only css sheet or tag
+                        if has_one_sheet:
+                            break
                 else:
                     combined_css = self.get_combined_css(file, css_list)
                     combined_styletag = CSSinator.Stylesheet(
