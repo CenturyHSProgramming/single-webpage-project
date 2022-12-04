@@ -1404,7 +1404,7 @@ class CSSReport:
         file_dict = {}
         for file in html_files:
             filename = clerk.get_file_name(file)
-            file_dict[filename] = []
+            file_dict[filename] = {"link_order": [], "stylesheets": []}
             head_children = self.get_children(file, "head")
             if head_children:
                 for element in head_children:
@@ -1413,9 +1413,13 @@ class CSSReport:
                         source = element.attrs.get("href")
                         if source:
                             if "http" not in source and ".css" in source[-4:]:
-                                file_dict[filename].append(source)
+                                file_dict[filename]["link_order"].append(
+                                    source
+                                )
                         else:
-                            file_dict[filename].append("style tag")
+                            file_dict[filename]["link_order"].append(
+                                "style tag"
+                            )
         self.order_of_css_by_file = file_dict
 
     def check_pages_for_same_css_files(self):
@@ -1561,7 +1565,7 @@ class CSSReport:
                 has_one_sheet = len(css_list) == 1
                 if self.styletag_at_end(css_list):
                     combined_style_code = ""
-                    for sheet in css_list:
+                    for sheet in css_list["link_order"]:
                         if sheet != "style tag":
                             filepath = self.__dir_path + sheet
                             combined_style_code += clerk.file_to_string(
@@ -1575,31 +1579,31 @@ class CSSReport:
                                     file, combined_style_code
                                 )
                                 css_file_data = self.order_of_css_by_file[file]
-                                css_file_data[
-                                    "combined_stylesheets"
-                                ] = combined_stylesheet
+                                css_file_data["stylesheets"].append(
+                                    combined_stylesheet
+                                )
                             styletag_code = self.get_combined_css(
                                 file, css_list
                             )
                             styletag_sheet = CSSinator.Stylesheet(
                                 file, styletag_code, "style tag"
                             )
-                            self.order_of_css_by_file[file].append(
-                                styletag_sheet
-                            )
+                            css_file_data["stylesheets"].append(styletag_sheet)
                         # Only loop one time if there is only css sheet or tag
                         if has_one_sheet:
                             break
                 else:
                     combined_css = self.get_combined_css(file, css_list)
-                    combined_styletag = CSSinator.Stylesheet(
+                    combined_stylesheet = CSSinator.Stylesheet(
                         file, combined_css, "combined"
                     )
-                    print(combined_styletag.type)
+                    print("Do I need to change self directly?")
+                    css_list["stylesheets"].append(combined_stylesheet)
 
     def get_combined_css(self, file, css_list):
         combined_style_code = ""
-        for sheet in css_list:
+        filenames = css_list.get("link_order")
+        for sheet in filenames:
             if sheet == "style tag":
                 for tag in self.style_tag_contents:
                     if tag.href == file:
@@ -1610,7 +1614,7 @@ class CSSReport:
         return combined_style_code
 
     def styletag_at_end(self, css_list: list) -> bool:
-        return css_list[-1] == "style tag"
+        return css_list.get("link_order")[-1] == "style tag"
 
     def file_is_linked(self, filename):
         for sheets in self.linked_stylesheets.values():

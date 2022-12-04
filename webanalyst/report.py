@@ -389,7 +389,8 @@ if __name__ == "__main__":
     # 4. Go to report/report.html for results
 
     # project path
-    project_path = "tests/css_grid_project/"
+    # "tests/css_grid_project/"
+    project_path = "tests/large_project/"
     project_page = Report(project_path)
     project_page.generate_report()
     print(project_page.general_report)
