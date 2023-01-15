@@ -405,8 +405,6 @@ class HTMLReport:
         tbody_contents = BeautifulSoup(
             validation_results_string, "html.parser"
         )
-        tbody_id = "css-validation"
-        report_content.find(id=tbody_id).replace_with(tbody_contents)
 
         # Generate Error report
         # For HTML Errors

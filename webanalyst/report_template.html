@@ -208,25 +208,7 @@
                     <h2 class="subtitle">CSS Results</h2>
                 </header>
                 <div class="table-container">
-                    <table class="table is-striped is-hoverable">
-                        <caption class="has-text-weight-semibold">CSS Validator Reports</caption>
-                        <thead>
-                            <tr>
-                                <th>Page name</th>
-                                <th>Error Message</th>
-                                <th>Location</th>
-                                <th>Extract</th>
-                            </tr>
-                        </thead>
-                        <tbody id="css-validation-general">
-                            <tr id="css-validation">
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <p id="css-errors-outcome"></p>
                     <table class="table is-striped is-hoverable">
                         <caption class="has-text-weight-semibold">CSS Validator Errors</caption>
                         <thead>
@@ -238,6 +220,9 @@
                             </tr>
                         </thead>
                         <tbody id="css-validation-specifics">
+                            <tr id="css-errors-outcome">
+                                <td colspan="4"></td>
+                            </tr>
                             <tr id="css-validator-errors">
                                 <td></td>
                                 <td></td>

@@ -1,7 +1,7 @@
 # Project Name: Single Web Page with Style
 
 ## Project Description
-***GOAL***: Students will be able to write and organize content for a single web page that contains a variety of HTML headers, images, paragraphs, lists, and links and style the content using a variety of CSS techniques.
+***GOAL***: Students will be able to demonstrate basic layout techniques using the CSS float, box model, font, and color properties to create a single page that uses a banner header, single column (centered) layout, with at least one image box that is styled so the text wraps around the image.
 
 ### HTML Level = 101
 This project does meet the requirements for attaining the next level in HTML. For that, we need to create a multi-page website.
@@ -13,7 +13,7 @@ This project does meet the requirements for attaining the next level in CSS.
 ### General
 * Number of Files:
     * [HTML] At least 1 HTML doc/s
-    * [CSS] No files are necessary, but there should be a style tag
+    * [CSS] At least 1 CSS doc/s
 * Writing Goals: students are expected to aim for the following:
     * Average Words Per Sentence: 10 - 20
     * Average Sentences per paragraph: 1 - 5
@@ -28,18 +28,21 @@ This project does meet the requirements for attaining the next level in CSS.
         + `H2`: 2 or more per page
         + `P` : 3 or more per page
     * Other Tags:
-        + `IMG`: 3 or more
-        + `FIGURE`: 3 or more
-        + `FIGCAPTION`: 3 or more
+        + `HEADER`: 1 or more
+        + `SECTION`: 1 or more
+        + `ARTICLE`: 1 or more
+        + `FOOTER`: 1 or more
+        + `IMG`: 1 or more
+        + `FIGURE`: 1 or more
+        + `FIGCAPTION`: 1 or more
         + `UL` or `OL`: 1 or more
         + `LI`: 3 or more
         + `A`: 3 or more
-        + `STRONG` or `B`: 2 or more
-        + `EM` or `I`: 2 or more
     * Required Nested Tags:
-        + 3 `FIGURE`s that each must contain the following:`IMG` and `FIGCAPTION`
-        + 2 `P`s that each contain the following: `A`
-        + 1 `P` that conains the following: `EM`
+        + 1 `HEADER` that contains the following: `H1`
+        + 1 `FIGURE`s that contains the following:`IMG` and `FIGCAPTION`
+        + 1 `P` that contains the following: `A`
+        + 1 `FOOTER` that contains the following: `P`
 
 ### CSS
 * Standard Requirements:
@@ -66,8 +69,15 @@ This project does meet the requirements for attaining the next level in CSS.
         + padding
         + margin
         + border
+        + float
+        + background-image
+        + height
     * Element-Specific Properties:
+        + header: should contain the following properties:
+          - background-image
+          - background-repeat
+          - height
         + figure: should contain the following properties:
-            - padding
-            - margin
-            - border
+          - padding
+          - margin
+          - border

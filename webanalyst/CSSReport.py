@@ -1582,13 +1582,15 @@ class CSSReport:
                                 css_file_data["stylesheets"].append(
                                     combined_stylesheet
                                 )
-                            styletag_code = self.get_combined_css(
-                                file, css_list
-                            )
-                            styletag_sheet = CSSinator.Stylesheet(
-                                file, styletag_code, "style tag"
-                            )
-                            css_file_data["stylesheets"].append(styletag_sheet)
+                                styletag_code = self.get_combined_css(
+                                    file, css_list
+                                )
+                                styletag_sheet = CSSinator.Stylesheet(
+                                    file, styletag_code, "style tag"
+                                )
+                                css_file_data["stylesheets"].append(
+                                    styletag_sheet
+                                )
                         # Only loop one time if there is only css sheet or tag
                         if has_one_sheet:
                             break
@@ -1745,11 +1747,13 @@ class CSSReport:
                 fail = (
                     "<b>Fail</b>: No CSS styles were applied in the project."
                 )
-                general_results = '<tr><td colspan="4">' + fail + "</td></tr>"
+                general_results = (
+                    '<tr><td colspan="4">' + fail + "</td></tr>\n"
+                )
             else:
                 congrats = "Congratulations, no errors were found."
                 general_results = (
-                    '<tr><td colspan="4">' + congrats + "</td></tr>"
+                    '<tr><td colspan="4">' + congrats + "</td></tr>\n"
                 )
             pages = self.css_errors.keys()
             for page in pages:
@@ -1758,15 +1762,15 @@ class CSSReport:
                 specific_results += "<td>NA</td>" * 2 + "</tr>\n"
         else:
             specific_results = ""
+            general_results = '<tr><td colspan="4"><ul>'
             for page, errors in self.css_errors.items():
                 # Process general results
                 num_errors = len(errors)
+                general_results += "<p>The file <b>" + page + "</b> contains "
+                general_results += str(num_errors) + " errors.</p>"
+
+                # Process specific results
                 cumulative_errors += num_errors
-                general_results += "<tr><td>" + page + "</td>"
-                general_results += "<td>" + str(num_errors) + "</td>"
-                general_results += (
-                    "<td>" + str(cumulative_errors) + "</td></tr>"
-                )
 
                 # process specific results
                 for error in errors:
@@ -1775,7 +1779,7 @@ class CSSReport:
                     location = error["line_number"]
                     has_extract = error.get("extract")
                     if has_extract:
-                        extract = error["extract"].contents[0]
+                        extract = error["extract"].contents[0].strip()
                     specific_results += "<tr><td>" + page + "</td>"
                     specific_results += "<td>" + message + "</td>"
                     specific_results += "<td>" + location + "</td>"
@@ -1785,10 +1789,11 @@ class CSSReport:
                         )
                     else:
                         specific_results += "<td>No extract</td></tr>"
+            general_results += "</td></tr>"
         # create our tbody contents for general validation
-        tbody_contents = BeautifulSoup(general_results, "html.parser")
-        tbody_id = "css-validation-general"
-        report_content.find(id=tbody_id).replace_with(tbody_contents)
+        tr_contents = BeautifulSoup(general_results, "html.parser")
+        tr_id = "css-errors-outcome"
+        report_content.find(id=tr_id).replace_with(tr_contents)
 
         # create our tbody contents for css validation errors
         tbody_contents = BeautifulSoup(specific_results, "html.parser")
