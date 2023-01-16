@@ -1186,6 +1186,15 @@ class CSSReport:
             }
 
     def get_standard_requirements_results(self):
+        applied_to_all = self.styles_applied_to_all_pages
+        self.get_standard_requirements_results_by_key(
+            applied_to_all, "Styles Applied"
+        )
+
+        applied_consistently = self.styles_applied_consistently
+        self.get_standard_requirements_results_by_key(
+            applied_consistently, "Styles Applied consistenly"
+        )
         errors = self.get_css_errors()
         self.get_standard_requirements_results_by_key(errors, "CSS Errors")
 
@@ -1201,17 +1210,19 @@ class CSSReport:
 
     def get_standard_requirements_results_by_key(self, results, key):
         try:
-            range = self.report_details["standard_requirements_goals"][key]
-            min = range["min"]
-            max = range["max"]
-            passed = results >= min and results <= max
-            # NOTE: a passed means they are within the range
-            # and there are styles being applied
-            styles_applied = self.get_styles_applied()
-            if passed and styles_applied:
-                results = "Passed"
-            else:
-                results = "Failed"
+            # Short circuit this method if key is related to applying styles
+            if key not in ("Styles Applied", "Styles Applied consistenly"):
+                range = self.report_details["standard_requirements_goals"][key]
+                min = range["min"]
+                max = range["max"]
+                passed = results >= min and results <= max
+                # NOTE: a passed means they are within the range
+                # and there are styles being applied
+                styles_applied = self.get_styles_applied()
+                if passed and styles_applied:
+                    results = "Passed"
+                else:
+                    results = "Failed"
 
             self.report_details["standard_requirements_results"][key] = results
         except KeyError:
