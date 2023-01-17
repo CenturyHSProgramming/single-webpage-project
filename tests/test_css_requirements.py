@@ -47,11 +47,25 @@ def get_css_general_results(data):
     return results
 
 
-def get_standard_results(goals: dict, results: dict) -> list:
+def get_standard_results(goals: list, results: dict) -> list:
     """compares the goals to the results and returns a list of
     description and result to be processed as test results."""
     output = []
-    print(goals)
+    # for each goal description, append description and results
+    goal_index = 0
+    for result in results.items():
+        passed = result[1]
+        # make sure passed is a boolean type
+        the_type = str(type(passed))
+        if "bool" not in the_type:
+            if passed.lower() == "failed":
+                passed = False
+            elif passed.lower() == "passed":
+                passed = True
+        message = goals[goal_index][0]
+        output.append((message, passed))
+        goal_index += 1
+
     return output
 
 
@@ -72,5 +86,11 @@ standard_results = get_standard_results(
 
 @pytest.mark.parametrize("description,results", general_results)
 def test_for_general_css_requirements(description, results):
+    print(description)
+    assert results
+
+
+@pytest.mark.parametrize("description,results", standard_results)
+def test_for_standard_css_requirements(description, results):
     print(description)
     assert results
