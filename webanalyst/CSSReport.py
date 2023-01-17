@@ -1935,12 +1935,27 @@ class CSSReport:
     def get_project_specific_goals(self):
         """set the specific CSS goals for the given project based
         on the project requirements"""
-        self.get_required_selectors()
+        project_goals = self.report_details.get("project_specific_goals")
+        project_goals = self.get_required_selectors(project_goals)
         self.get_required_properties()
         self.get_required_css_by_element()
 
-    def get_required_selectors(self):
+    def get_required_selectors(self, goals):
         """get required CSS selectors"""
+        state = "skipping"
+        for row in self.readme_list:
+            if state == "getting" and "+" in row:
+                split = row.split("+")[1]
+                selector, min = split.split(":")
+                selector = selector.strip()
+                min = re.findall(r"\d", min)[0]
+                if min:
+                    min = int(min)
+                goals[selector] = min
+            if "required selectors" in row.lower():
+                state = "getting"
+            if "required properties" in row.lower():
+                return goals
 
     def get_required_properties(self):
         """get required properties"""
