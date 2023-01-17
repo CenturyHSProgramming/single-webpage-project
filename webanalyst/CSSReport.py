@@ -85,6 +85,7 @@ class CSSReport:
         self.get_standard_requirements_results()
         self.get_general_styles_goals()
         self.get_general_styles_results()
+        self.get_project_specific_goals()
         self.get_css_results()
         self.publish_results()
 
@@ -1930,6 +1931,26 @@ class CSSReport:
                     "", page, error_str, cumulative_errors_string, meets
                 )
             return results
+
+    def get_project_specific_goals(self):
+        """set the specific CSS goals for the given project based
+        on the project requirements"""
+        self.get_required_selectors()
+        self.get_required_properties()
+        self.get_required_css_by_element()
+
+    def get_required_selectors(self):
+        """get required CSS selectors"""
+
+    def get_required_properties(self):
+        """get required properties"""
+
+    def get_required_css_by_element(self):
+        """get required CSS by element"""
+
+    def get_project_specific_results(self):
+        """determines whether the project meets all goals specific
+        to the project (based on requirements)"""
 
     def get_css_results(self):
         """determines overall results for CSS goals"""
