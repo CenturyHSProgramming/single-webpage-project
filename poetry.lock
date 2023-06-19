@@ -498,7 +498,7 @@ smmap = ">=3.0.1,<6"
 
 [[package]]
 name = "gitpython"
-version = "3.1.29"
+version = "3.1.30"
 description = "GitPython is a python library used to interact with Git repositories"
 optional = false
 python-versions = ">=3.7"
@@ -1650,7 +1650,7 @@ plugins = ["importlib-metadata"]
 
 [[package]]
 name = "pymdown-extensions"
-version = "9.8"
+version = "10.0"
 description = "Extension pack for Python Markdown."
 optional = false
 python-versions = ">=3.7"
@@ -1661,6 +1661,7 @@ files = [
 
 [package.dependencies]
 markdown = ">=3.2"
+pyyaml = "*"
 
 [[package]]
 name = "pyparsing"
