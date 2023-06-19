@@ -19,7 +19,7 @@ pypiwin32 = "^223"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^5.0.4"
-pre-commit = "^2.20.0"
+pre-commit = "^2.21.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
